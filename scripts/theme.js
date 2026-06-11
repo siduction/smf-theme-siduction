@@ -67,11 +67,19 @@ $(function() {
 	// Expand link toggles it.
 	var CODE_MAX_LINES = 5;
 
-	function sidCollapseCode(code, btn) {
+	// Height of the collapsed state, in px (CODE_MAX_LINES lines + padding).
+	// SMF renders code line breaks as <br>, so the text has no "\n" to count
+	// — we decide and clip purely by rendered height.
+	function sidCollapsedHeight(code) {
 		var cs = getComputedStyle(code);
 		var lineHeight = parseFloat(cs.lineHeight) || 20;
 		var padTop = parseFloat(cs.paddingTop) || 0;
-		code.style.maxHeight = Math.round(lineHeight * CODE_MAX_LINES + padTop) + 'px';
+		var padBot = parseFloat(cs.paddingBottom) || 0;
+		return Math.round(lineHeight * CODE_MAX_LINES + padTop + padBot);
+	}
+
+	function sidCollapseCode(code, btn) {
+		code.style.maxHeight = sidCollapsedHeight(code) + 'px';
 		code.style.overflow = 'auto';
 		code.classList.add('sid_code_collapsed');
 		if (btn)
@@ -90,9 +98,8 @@ $(function() {
 		var header = code.previousElementSibling;
 		var btn = header ? header.querySelector('.smf_expand_code') : null;
 
-		// Source-line count: "longer than 5 lines" means 5 real lines.
-		var lines = code.textContent.replace(/\s+$/, '').split('\n').length;
-		if (lines <= CODE_MAX_LINES) {
+		// Decide by rendered height: taller than ~5 lines collapses.
+		if (code.scrollHeight <= sidCollapsedHeight(code) + 4) {
 			// Short enough to show in full; no expander needed.
 			if (btn)
 				btn.classList.add('hidden');
