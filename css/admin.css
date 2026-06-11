@@ -1,9 +1,4 @@
-/**
- * Siduction theme for SMF 2.1 - admin & moderation area.
- *
- * index.css already styles the shared components (cards, tables, forms,
- * buttons, icons, the generic menu); this file adds admin-specific layout.
- */
+/* Siduction theme for SMF 2.1 - admin & moderation area. */
 
 #admincenter,
 #admin_content {

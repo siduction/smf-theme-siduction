@@ -1,10 +1,4 @@
-/**
- * Siduction theme for SMF 2.1 - main stylesheet.
- *
- * A Bootstrap 5.3 flavoured re-skin. Colours come from custom properties so the
- * light and dark schemes share a single set of component rules. "auto" follows
- * prefers-color-scheme; data-theme on <html> forces a scheme.
- */
+/* Siduction theme for SMF 2.1 - main stylesheet. */
 
 /* ==========================================================================
    Icon font (Bootstrap Icons)
@@ -79,7 +73,7 @@
 	--container: 1200px;
 }
 
-/* Dark scheme - applied automatically when the browser asks for it... */
+/* Dark scheme (auto) */
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) {
 		color-scheme: dark;
@@ -120,7 +114,7 @@
 	}
 }
 
-/* ...and when the visitor forces dark with the switch. */
+/* Dark scheme (forced via data-theme="dark") */
 :root[data-theme="dark"] {
 	color-scheme: dark;
 
@@ -836,8 +830,7 @@ a[class^="mobile_generic_menu"] {
 	color: var(--text-muted);
 }
 
-/* Topic prev/next - theme.js moves the .nextlinks span here from
-   #display_head, where it used to float out of the topic header card. */
+/* theme.js moves .nextlinks here from #display_head */
 .navigate_section li.next_prev {
 	margin-left: auto;
 }
@@ -1285,12 +1278,7 @@ a.subject {
 	font-size: .9rem;
 }
 
-/* Post icons. The theme ships no raster images, so SMF's <img> post-icons
-   are swapped for Bootstrap Icons glyphs — in posts (.messageicon), in the
-   topic list (.board_icon) and in the icon picker (#iconList). The glyph is
-   drawn on whichever element directly holds the <img>. xx.png is SMF's
-   "standard" icon: blank on display, shown only in the picker so it stays
-   pickable. */
+/* Post icons — SMF's <img> icons are replaced with Bootstrap Icons glyphs. */
 .messageicon {
 	display: inline-block;
 	vertical-align: middle;
@@ -1389,15 +1377,12 @@ a.subject {
 	opacity: .35;
 }
 
-/* The WYSIWYG iframe element defaults to a white background, which shows
-   through its own left/right padding as white stripes. Its content is themed
-   separately via css/jquery.sceditor.default.css loaded into its document. */
+/* Override the iframe's default white background to avoid visible side stripes. */
 .sceditor-container iframe {
 	background: var(--bg-surface) !important;
 }
 
-/* The source-mode textarea (the WYSIWYG iframe is themed separately, via
-   css/jquery.sceditor.default.css loaded into its own document). */
+/* Source-mode textarea. */
 .sceditor-container textarea {
 	background: var(--bg-surface) !important;
 	color: var(--text) !important;
@@ -1499,8 +1484,7 @@ pre {
 	overflow: auto;
 }
 
-/* Code blocks taller than 5 lines start collapsed (see theme.js); the
-   codeheader's Expand/Shrink link toggles them. */
+/* Collapsed code blocks (toggled by theme.js). */
 .bbc_code.sid_code_collapsed {
 	mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent);
 	-webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent);
@@ -1809,13 +1793,12 @@ dl.settings dd {
 	margin-block: .5rem;
 }
 
-/* Cluster the action buttons + page links on the right, in line with the
-   post content above/below. */
+/* Right-align action buttons and page links. */
 .pagesection {
 	justify-content: flex-end;
 }
 
-/* Print button: show a printer glyph instead of the "Drucken" label. */
+/* Print button: replace the text label with a printer glyph. */
 .button_strip_print {
 	font-size: 0 !important;
 }
@@ -1887,8 +1870,7 @@ dl.settings dd {
 	box-shadow: var(--shadow-lg);
 }
 
-/* Beat the #top_section a { color: var(--text-on-brand) } rule that bleeds
-   into popups anchored under the navy header. */
+/* Override the top-section link colour inside dropdowns. */
 #top_section .top_menu a,
 #top_section .popup_window a,
 .top_menu a,
@@ -1896,8 +1878,7 @@ dl.settings dd {
 	color: var(--text);
 }
 
-/* Dropdown panels stay hidden until opened: SMF's JS adds .visible to the
-   profile/PM/alerts menus; button-strip menus open on hover. */
+/* Dropdown panels (SMF adds .visible via JS; hover menus handled by CSS). */
 .top_menu {
 	display: none;
 	position: absolute;
@@ -1955,8 +1936,7 @@ dl.settings dd {
 	font-size: .85em;
 }
 
-/* User profile menu popup (#profile_menu) — avatar + name header, then a
-   list of profile/account links. */
+/* Profile menu popup. */
 #profile_menu {
 	padding: 0;
 	min-width: 16rem;
@@ -2347,17 +2327,13 @@ dl.settings dd {
 /* ==========================================================================
    Login & 2FA card
    ========================================================================== */
-/* div-scoped because <span class="main_icons login"> would otherwise pick
-   up the card sizing/margin and warp the navbar icon. */
+/* div-scoped to avoid matching the .main_icons.login navbar icon. */
 div.login {
 	max-width: 28rem;
 	margin: clamp(2rem, 12vh, 7rem) auto 2rem;
 }
 
-/* When SMF actually shows the login or 2FA form, float the card as a real
-   modal — pinned to the centre of the viewport with a dimmed backdrop. This
-   covers both the standalone login page (div.login wrapper) and the AJAX
-   overlay variant SMF's reqOverlayDiv appends to <body> (.popup_window). */
+/* Pin the login/2FA card to the viewport centre (standalone page and AJAX overlay). */
 div.login:has(form#frmLogin),
 div.login:has(form#frmTfa),
 .popup_window:has(form#frmLogin),
@@ -2372,8 +2348,7 @@ div.login:has(form#frmTfa),
 	z-index: 100;
 }
 
-/* If the AJAX overlay wraps an inner .login, keep that inner card in-flow so
-   we don't end up with two nested fixed-positioned boxes. */
+/* Inner .login inside an overlay stays in-flow to avoid double-fixed nesting. */
 .popup_window div.login:has(form#frmLogin),
 .popup_window div.login:has(form#frmTfa) {
 	position: static;

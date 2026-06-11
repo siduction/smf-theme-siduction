@@ -1,14 +1,4 @@
-/**
- * Siduction theme service worker.
- *
- * Catches requests for SMF's smiley GIFs (which we've replaced with Unicode
- * emoji in the DOM) and answers them with a 1x1 transparent GIF, so the
- * browser never actually hits the network for them.
- *
- * Needs Service-Worker-Allowed: / on the response that serves this file —
- * see the .htaccess next to it.
- */
-
+// Intercepts smiley GIF requests and returns a 1x1 transparent GIF stub.
 self.addEventListener('install', function() {
 	self.skipWaiting();
 });

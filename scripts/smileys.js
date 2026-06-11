@@ -1,29 +1,23 @@
-/**
- * Replace SMF's <img class="smiley"> tags with Unicode emoji.
- *
- * Loaded synchronously in <head> so a MutationObserver is in place before the
- * body is parsed: as soon as the parser inserts a smiley <img> we drop its
- * src, which aborts the GIF fetch before it hits the network in most cases.
- */
+// Replace SMF's <img class="smiley"> tags with Unicode emoji.
 (function() {
 
 	window.sidSmileys = {
-		':)':   '🙂',   // smiley
-		';)':   '😉',   // wink
-		':D':   '😃',   // cheesy
-		';D':   '😄',   // grin
-		'>:(':  '😠',   // angry
-		':(':   '🙁',   // sad
-		':o':   '😮',   // shocked
-		'8)':   '😎',   // cool
-		'???':  '😕',   // huh
-		'::)':  '🙄',   // rolleyes
-		':P':   '😛',   // tongue
-		':-[':  '😳',   // embarrassed
-		':-X':  '🤐',   // lips sealed
-		':-\\': '😐',   // undecided
-		':-*':  '😘',   // kiss
-		":'(":  '😢'    // cry
+		':)':   '🙂',
+		';)':   '😉',
+		':D':   '😃',
+		';D':   '😄',
+		'>:(':  '😠',
+		':(':   '🙁',
+		':o':   '😮',
+		'8)':   '😎',
+		'???':  '😕',
+		'::)':  '🙄',
+		':P':   '😛',
+		':-[':  '😳',
+		':-X':  '🤐',
+		':-\\': '😐',
+		':-*':  '😘',
+		":'(":  '😢'
 	};
 
 	function swap(img) {
@@ -52,16 +46,14 @@
 		}
 	}).observe(document.documentElement, { childList: true, subtree: true });
 
-	// Pick up anything that was already in the DOM if this script lands late.
+	// Pick up nodes already in the DOM when this script loads late.
 	document.addEventListener('DOMContentLoaded', function() {
 		var imgs = document.querySelectorAll('img.smiley');
 		for (var i = 0; i < imgs.length; i++)
 			swap(imgs[i]);
 	});
 
-	// Register the service worker that stubs out the smiley GIF requests
-	// before they reach the network. Needs Service-Worker-Allowed: / on
-	// sw.js for the root scope (set in the sibling .htaccess).
+	// Register the service worker that intercepts smiley GIF requests.
 	if ('serviceWorker' in navigator && document.currentScript) {
 		var swUrl = document.currentScript.src.replace(/[^/]+$/, 'sw.js');
 		navigator.serviceWorker.register(swUrl, { scope: '/' }).catch(function() {});

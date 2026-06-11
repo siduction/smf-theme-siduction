@@ -1,10 +1,6 @@
 <?php
 /**
- * Siduction theme for SMF 2.1
- *
- * Main template: header, footer, menu and link tree. Built to run without any
- * inline scripts, inline styles or inline event handlers, so a strict CSP
- * (script-src 'self'; style-src 'self') does not need 'unsafe-inline'.
+ * Siduction theme for SMF 2.1 — main template.
  *
  * @version 0.0.0-dev
  */
@@ -16,21 +12,15 @@ function template_init()
 {
 	global $settings, $txt;
 
-	// SMF version this theme targets.
 	$settings['theme_version'] = '2.1';
-
-	// We ship our own ThemeStrings (color scheme labels).
 	$settings['require_theme_strings'] = true;
 
-	// We ship no raster images, so serve SMF's <img> icons from the default theme.
+	// Use SMF's default-theme images (we ship no raster icons).
 	if (!empty($settings['default_images_url']))
 		$settings['images_url'] = $settings['default_images_url'];
 
-	// Login/register stay in the top bar, not in the main menu.
 	$settings['login_main_menu'] = false;
 
-	// Page index formatting. The "expand" control carries its data in
-	// attributes; scripts/theme.js wires up the click handler.
 	$settings['page_index'] = array(
 		'extra_before' => '<span class="pages">' . $txt['pages'] . '</span>',
 		'previous_page' => '<span class="main_icons previous_page"></span>',
@@ -59,20 +49,17 @@ function template_html_above()
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="color-scheme" content="light dark">';
 
-	// Set the color scheme before first paint to avoid a flash. External file,
-	// so no inline script and no CSP exception needed.
+	// Loaded before first paint to avoid a flash; external files need no CSP exception.
 	echo '
 	<script src="', $settings['theme_url'], '/scripts/color-mode.js"></script>
 	<script src="', $settings['theme_url'], '/scripts/smileys.js"></script>';
 
-	// CSS and JS from the theme and any mods.
 	template_css();
 	template_javascript();
 
 	echo '
 	<title>', $context['page_title_html_safe'], '</title>';
 
-	// Content related meta tags (description, Open Graph, etc.).
 	foreach ($context['meta_tags'] as $meta_tag)
 	{
 		echo '
@@ -84,7 +71,6 @@ function template_html_above()
 		echo '>';
 	}
 
-	// Browser UI color, per scheme.
 	echo '
 	<meta name="theme-color" content="#162d50" media="(prefers-color-scheme: light)">
 	<meta name="theme-color" content="#0d1626" media="(prefers-color-scheme: dark)">
@@ -120,7 +106,6 @@ function template_html_above()
 		echo '
 	<link rel="index" href="', $scripturl, '?board=', $context['current_board'], '.0">';
 
-	// Headers from mods.
 	echo $context['html_headers'];
 
 	echo '
@@ -141,7 +126,6 @@ function template_body_above()
 	<div id="top_section">
 		<div class="inner_wrap">';
 
-	// Logged in: the user's own menu (profile, messages, alerts).
 	if ($context['user']['is_logged'])
 	{
 		echo '
@@ -187,7 +171,6 @@ function template_body_above()
 		echo '
 			</ul>';
 	}
-	// Guests: invite them to log in or register.
 	elseif (empty($maintenance))
 	{
 		if (!empty($settings['login_main_menu']))
@@ -233,7 +216,6 @@ function template_body_above()
 	echo '
 			<div class="floatright header_tools">';
 
-	// Color scheme switch. theme.js / color-mode.js handle the click.
 	echo '
 				<button type="button" id="color-mode-toggle" class="color_mode_toggle" aria-label="', $txt['color_mode_toggle'], '" title="', $txt['color_mode_toggle'], '"></button>';
 
@@ -300,8 +282,6 @@ function template_body_above()
 		</div><!-- .inner_wrap -->
 	</div><!-- #top_section -->';
 
-	// Header with the Siduction logo. The logo image lives in css/index.css
-	// (background-image) so it can swap per color scheme without inline styles.
 	echo '
 	<header id="header">
 		<h1 class="forumtitle">
@@ -352,7 +332,6 @@ function template_body_above()
 	echo '
 				</div>';
 
-	// Main menu, plus its mobile popup variant.
 	echo '
 				<a class="mobile_user_menu">
 					<span class="menu_icon"></span>
@@ -612,7 +591,6 @@ function template_quickbuttons($list_items, $list_class = null, $output_method =
 	if (!empty($list_class))
 		call_integration_hook('integrate_' . $list_class . '_quickbuttons', array(&$list_items));
 
-	// Drop hidden items.
 	foreach ($list_items as $key => $li)
 	{
 		if ($key == 'more')

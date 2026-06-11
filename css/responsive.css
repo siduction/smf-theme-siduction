@@ -1,8 +1,4 @@
-/**
- * Siduction theme for SMF 2.1 - responsive rules.
- *
- * SMF loads this file automatically on top of index.css.
- */
+/* Siduction theme for SMF 2.1 - responsive rules. */
 
 /* Tablet and below */
 @media (max-width: 768px) {

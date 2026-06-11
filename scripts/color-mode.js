@@ -1,10 +1,4 @@
-/**
- * Color scheme handling for the Siduction theme.
- *
- * Loaded synchronously in the <head> so the scheme is set before the first
- * paint. "auto" follows the browser via the prefers-color-scheme media query;
- * "light" / "dark" force a scheme through the data-theme attribute.
- */
+// Color scheme handling. Loaded in <head> to set the scheme before first paint.
 (function () {
 	'use strict';
 
