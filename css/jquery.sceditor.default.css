@@ -6,7 +6,19 @@
  */
 
 html {
+	height: 100%;
 	color-scheme: light dark;
+}
+
+/* Match the post font and let the editable area fill the iframe, so a click
+   anywhere places the cursor instead of only landing on an existing line. */
+body {
+	min-height: 100%;
+	margin: 0;
+	padding: 8px;
+	box-sizing: border-box;
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+	line-height: 1.5;
 }
 
 a {

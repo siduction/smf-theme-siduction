@@ -1389,6 +1389,13 @@ a.subject {
 	opacity: .35;
 }
 
+/* The WYSIWYG iframe element defaults to a white background, which shows
+   through its own left/right padding as white stripes. Its content is themed
+   separately via css/jquery.sceditor.default.css loaded into its document. */
+.sceditor-container iframe {
+	background: var(--bg-surface) !important;
+}
+
 /* The source-mode textarea (the WYSIWYG iframe is themed separately, via
    css/jquery.sceditor.default.css loaded into its own document). */
 .sceditor-container textarea {
