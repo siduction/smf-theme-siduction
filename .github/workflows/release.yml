@@ -1,0 +1,54 @@
+name: Release theme
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Derive version from tag
+        id: ver
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"        # v1.0 -> 1.0
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Stamp version into theme files
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          sed -i -E "s|<version>[^<]*</version>|<version>${VERSION}</version>|" theme_info.xml
+          sed -i -E "s|(@version[[:space:]]+).*|\1${VERSION}|" index.template.php
+          grep -n "<version>" theme_info.xml
+          grep -n "@version" index.template.php
+
+      - name: Build theme zip (wrapped in siduction/)
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          rm -rf dist && mkdir -p dist/siduction
+          rsync -a \
+            --exclude='.git' --exclude='.github' --exclude='.gitignore' \
+            --exclude='deploy.sh' --exclude='dist' --exclude='.DS_Store' \
+            ./ dist/siduction/
+          (cd dist && zip -r -q "siduction-${VERSION}.zip" siduction)
+          ls -lah dist
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          PRERELEASE=""
+          case "$VERSION" in *-*) PRERELEASE="--prerelease";; esac   # v1.0-rc1 -> prerelease
+          gh release create "$GITHUB_REF_NAME" \
+            "dist/siduction-${VERSION}.zip" \
+            --title "Siduction $VERSION" \
+            --generate-notes $PRERELEASE

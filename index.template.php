@@ -6,7 +6,7 @@
  * inline scripts, inline styles or inline event handlers, so a strict CSP
  * (script-src 'self'; style-src 'self') does not need 'unsafe-inline'.
  *
- * @version 1.0
+ * @version 0.0.0-dev
  */
 
 /**

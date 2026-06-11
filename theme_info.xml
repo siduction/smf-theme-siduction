@@ -2,7 +2,7 @@
 <theme-info xmlns="http://www.simplemachines.org/xml/theme-info" xmlns:smf="http://www.simplemachines.org/">
 	<!-- Unique id: author name, a colon, then the theme name. -->
 	<id>siduction:siduction</id>
-	<version>1.0</version>
+	<version>0.0.0-dev</version>
 	<!-- Theme name, used purely for aesthetics. -->
 	<name>Siduction</name>
 	<author name="siduction Team">team@siduction.org</author>
