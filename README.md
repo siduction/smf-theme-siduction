@@ -69,7 +69,3 @@ place and the rest of the theme follows.
 - Made for the [siduction](https://siduction.org/) forum.
 - Icons from [Bootstrap Icons](https://icons.getbootstrap.com/) (MIT).
 - Runs on [Simple Machines Forum](https://www.simplemachines.org/).
-
-## License
-
-*To be decided — add a `LICENSE` file before the first public release.*
