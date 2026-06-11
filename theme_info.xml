@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<theme-info xmlns="http://www.simplemachines.org/xml/theme-info" xmlns:smf="http://www.simplemachines.org/">
+	<!-- Unique id: author name, a colon, then the theme name. -->
+	<id>siduction:siduction</id>
+	<version>1.0</version>
+	<!-- Theme name, used purely for aesthetics. -->
+	<name>Siduction</name>
+	<author name="siduction Team">team@siduction.org</author>
+	<website>https://siduction.org/</website>
+	<!-- Template layers to use, defaults to "html,body". -->
+	<layers>html,body</layers>
+	<!-- Templates to load on startup. Default is "index". -->
+	<templates>index</templates>
+	<!-- Base this theme off another? Blank inherits from the default theme. -->
+	<based-on></based-on>
+	<!-- SMF versions this theme is compatible with. -->
+	<install for="2.1.*" />
+</theme-info>

@@ -1,0 +1,52 @@
+/**
+ * Siduction theme for SMF 2.1 - right-to-left adjustments.
+ *
+ * SMF loads this file automatically for RTL languages. index.css uses logical
+ * properties where possible; this file flips the remaining physical ones.
+ */
+
+.floatleft {
+	float: right;
+}
+
+.floatright {
+	float: left;
+}
+
+.header_tools {
+	margin-left: 0;
+	margin-right: auto;
+}
+
+blockquote,
+.bbc_standard_quote,
+.bbc_alternate_quote {
+	border-left: 0;
+	border-right: 3px solid var(--sid-blue);
+	border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.table_grid th,
+.table_grid td,
+.menu_nav ul li a,
+dl.settings dt {
+	text-align: right;
+}
+
+.menu_nav ul ul {
+	left: auto;
+	right: 100%;
+}
+
+.quickbuttons .post_options > ul {
+	right: auto;
+	left: 0;
+}
+
+.half_content {
+	float: right;
+}
+
+.half_content:nth-of-type(even) {
+	float: left;
+}

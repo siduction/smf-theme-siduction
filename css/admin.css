@@ -1,0 +1,146 @@
+/**
+ * Siduction theme for SMF 2.1 - admin & moderation area.
+ *
+ * index.css already styles the shared components (cards, tables, forms,
+ * buttons, icons, the generic menu); this file adds admin-specific layout.
+ */
+
+#admincenter,
+#admin_content {
+	margin-top: 1rem;
+}
+
+/* Quick-search form in the section bar. */
+.admin_search {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: .35rem;
+	margin: 0 0 .75rem;
+}
+
+/* Update-available banner (filled in by SMF's JS). */
+#update_section:not(:empty) {
+	margin-bottom: 1rem;
+	padding: .8rem 1rem;
+	background: var(--warning-bg);
+	border: 1px solid var(--warning);
+	border-radius: var(--radius);
+}
+
+/* --- Admin home: live news + support info ------------------------------- */
+#admin_main_section {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+#live_news,
+#support_info {
+	flex: 1 1 340px;
+	min-width: 0;
+	float: none;
+}
+
+.windowbg.nopadding {
+	padding: 0;
+}
+
+#version_details.padding,
+.windowbg .padding {
+	padding: 1rem;
+}
+
+/* Collapsible admin sections (the intro text and the live-news panel).
+   theme.js moves both to the page bottom and starts them collapsed. */
+#live_news .cat_bar,
+.admin_intro_bar .catbg {
+	cursor: pointer;
+}
+
+#live_news .catbg::after,
+.admin_intro_bar .catbg::after {
+	margin-left: auto;
+	content: "\25BE";
+	font-size: .8em;
+}
+
+#live_news.is-collapsed .catbg::after,
+.admin_intro_bar.is-collapsed .catbg::after {
+	content: "\25B8";
+}
+
+/* --- Admin home: section boxes (full width, stacked) -------------------- */
+fieldset.admin_group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .5rem;
+	margin: 1rem 0 0;
+	padding: 1rem;
+	background: var(--bg-surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+}
+
+fieldset.admin_group legend {
+	padding: 0 .35rem;
+	font-size: 1.05rem;
+	font-weight: 600;
+	color: var(--text);
+}
+
+fieldset.admin_group > a {
+	display: flex;
+	flex: 1 1 240px;
+	align-items: center;
+	gap: .55rem;
+	padding: .55rem .75rem;
+	color: var(--text);
+	background: var(--bg-surface-2);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	font-size: .9rem;
+}
+
+fieldset.admin_group > a:hover {
+	background: var(--bg-surface-3);
+	border-color: var(--text-faint);
+	text-decoration: none;
+}
+
+fieldset.admin_group > a.inactive {
+	opacity: .55;
+}
+
+/* Keep admin icons small, whatever form they take. */
+.large_admin_menu_icon_file,
+fieldset.admin_group [class^="large_"],
+fieldset.admin_group [class*=" large_"] {
+	flex: 0 0 auto;
+	width: 1.5rem;
+	height: 1.5rem;
+	object-fit: contain;
+}
+
+.large_admin_menu_icon {
+	color: var(--sid-blue);
+}
+
+/* --- Two-column admin settings pages ----------------------------------- */
+.half_content {
+	flex: 1 1 320px;
+	min-width: 0;
+}
+
+#admin_content > form > .half_content,
+.admin_columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+@media (max-width: 768px) {
+	.half_content {
+		flex-basis: 100%;
+	}
+}

@@ -1,0 +1,215 @@
+/**
+ * Siduction theme for SMF 2.1 - responsive rules.
+ *
+ * SMF loads this file automatically on top of index.css.
+ */
+
+/* Tablet and below */
+@media (max-width: 768px) {
+	#top_section .inner_wrap {
+		justify-content: center;
+	}
+
+	.header_tools {
+		margin-left: 0;
+	}
+
+	/* Main menu collapses behind a toggle. */
+	.mobile_user_menu {
+		display: flex;
+	}
+
+	#main_menu {
+		display: none;
+		background: transparent;
+	}
+
+	#main_menu.is-open {
+		display: block;
+		margin-top: .5rem;
+	}
+
+	#main_menu.is-open .popup_window {
+		background: var(--bg-surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow-lg);
+		overflow: hidden;
+	}
+
+	#main_menu.is-open .popup_heading {
+		display: flex;
+		background: var(--bg-menu);
+		color: var(--text-on-brand);
+	}
+
+	.menu_nav {
+		flex-direction: column;
+	}
+
+	.menu_nav > li > a {
+		color: var(--text);
+		border-radius: 0;
+	}
+
+	.menu_nav > li > a:hover {
+		background: var(--bg-surface-2);
+	}
+
+	.menu_nav > li > a.active {
+		color: #fff;
+	}
+
+	.menu_nav ul {
+		position: static;
+		min-width: 0;
+		padding-left: 1rem;
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		border: 0;
+		box-shadow: none;
+	}
+
+	/* Admin / moderation menu becomes a vertical list. */
+	.generic_menu > .dropmenu {
+		flex-direction: column;
+	}
+
+	.generic_menu .dropmenu ul {
+		position: static;
+		min-width: 0;
+		padding-left: 1rem;
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		border: 0;
+		box-shadow: none;
+	}
+
+	/* Stack the post layout into a single column. */
+	.post_wrapper {
+		grid-template-columns: 1fr;
+	}
+
+	.poster,
+	.postarea,
+	.moderatorbar {
+		grid-column: 1;
+		grid-row: auto;
+	}
+
+	/* Compact mobile poster: avatar left, username + role stacked right;
+	   secondary info hidden. */
+	.poster {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-template-areas: "avatar name" "avatar role";
+		align-items: center;
+		gap: 0 .75rem;
+		padding-bottom: .6rem;
+		margin-bottom: .6rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.poster h4 {
+		grid-area: name;
+		margin: 0;
+	}
+
+	.poster .user_info {
+		display: contents;
+	}
+
+	.user_info .avatar {
+		grid-area: avatar;
+		margin: 0;
+	}
+
+	.user_info .avatar img {
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+	}
+
+	.user_info .membergroup {
+		grid-area: role;
+		font-size: .85em;
+		color: var(--text-muted);
+	}
+
+	.user_info .icons,
+	.user_info .postgroup,
+	.user_info .postcount,
+	.user_info .im_icons,
+	.user_info .profile,
+	.user_info .custom {
+		display: none;
+	}
+
+	/* Stack board/topic row columns. */
+	.info,
+	.board_stats,
+	.lastpost {
+		flex-basis: 100%;
+	}
+
+	dl.settings {
+		grid-template-columns: 1fr;
+		gap: .2rem .9rem;
+	}
+
+	.quickbuttons {
+		justify-content: flex-start;
+	}
+}
+
+/* Phones */
+@media (max-width: 560px) {
+	#wrapper,
+	#header .inner_wrap,
+	#top_section .inner_wrap,
+	#footer .inner_wrap {
+		width: 94%;
+	}
+
+	#header {
+		justify-content: center;
+		text-align: center;
+	}
+
+	.header_tools {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	#search_form input[type="search"] {
+		min-width: 7rem;
+	}
+
+	#footer ul {
+		flex-direction: column;
+	}
+}
+
+/* SMF helper: hide an element on narrow screens. */
+@media (max-width: 720px) {
+	.hide_720 {
+		display: none !important;
+	}
+}
+
+/* Mobile-only action bars rendered by inherited templates. */
+#mobile_action,
+#mobile_moderation,
+.mobile_buttons {
+	display: none;
+}
+
+@media (max-width: 720px) {
+	#mobile_action,
+	#mobile_moderation,
+	.mobile_buttons {
+		display: block;
+	}
+}

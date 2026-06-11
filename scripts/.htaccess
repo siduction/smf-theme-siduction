@@ -1,0 +1,6 @@
+# sw.js needs root scope to intercept /Smileys/* requests, even though it
+# lives in /Themes/siduction/scripts/. Setting this header on the response
+# tells the browser to allow the wider scope.
+<Files "sw.js">
+	Header set Service-Worker-Allowed "/"
+</Files>
