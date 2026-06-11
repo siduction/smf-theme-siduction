@@ -1492,6 +1492,17 @@ pre {
 	overflow: auto;
 }
 
+/* Code blocks taller than 5 lines start collapsed (see theme.js); the
+   codeheader's Expand/Shrink link toggles them. */
+.bbc_code.sid_code_collapsed {
+	mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent);
+	-webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent);
+}
+
+.codeheader .smf_expand_code {
+	cursor: pointer;
+}
+
 code {
 	padding: .12em .35em;
 }

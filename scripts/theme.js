@@ -57,6 +57,69 @@ $(function() {
 		$(this).toggleClass('original_size');
 	});
 
+	// --- Code blocks: collapse-by-default + working Expand/Shrink ---------
+	//
+	// SMF renders each code block as <div class="codeheader">…<a
+	// class="smf_expand_code">…</a></div><code class="bbc_code">…</code>.
+	// Core's own toggle does nothing here because the theme puts no height
+	// limit on .bbc_code, so there is never anything to expand. We own the
+	// behaviour: anything taller than 5 lines starts collapsed, and the
+	// Expand link toggles it.
+	var CODE_MAX_LINES = 5;
+
+	function sidCollapseCode(code, btn) {
+		var cs = getComputedStyle(code);
+		var lineHeight = parseFloat(cs.lineHeight) || 20;
+		var padTop = parseFloat(cs.paddingTop) || 0;
+		code.style.maxHeight = Math.round(lineHeight * CODE_MAX_LINES + padTop) + 'px';
+		code.style.overflow = 'auto';
+		code.classList.add('sid_code_collapsed');
+		if (btn)
+			btn.textContent = btn.getAttribute('data-expand-txt') || btn.textContent;
+	}
+
+	function sidExpandCode(code, btn) {
+		code.style.maxHeight = '';
+		code.classList.remove('sid_code_collapsed');
+		if (btn)
+			btn.textContent = btn.getAttribute('data-shrink-txt') || btn.textContent;
+	}
+
+	$('code.bbc_code').each(function() {
+		var code = this;
+		var header = code.previousElementSibling;
+		var btn = header ? header.querySelector('.smf_expand_code') : null;
+
+		// Source-line count: "longer than 5 lines" means 5 real lines.
+		var lines = code.textContent.replace(/\s+$/, '').split('\n').length;
+		if (lines <= CODE_MAX_LINES) {
+			// Short enough to show in full; no expander needed.
+			if (btn)
+				btn.classList.add('hidden');
+			return;
+		}
+
+		if (btn)
+			btn.classList.remove('hidden');
+		sidCollapseCode(code, btn);
+	});
+
+	// Toggle on click. Delegated so it also covers posts loaded via quick
+	// edit / ajax. We drive everything off our own class, independent of
+	// whatever core may or may not bind to the same link.
+	$(document).on('click', '.smf_expand_code', function(e) {
+		e.preventDefault();
+		var btn = this;
+		var header = btn.closest('.codeheader');
+		var code = header ? header.nextElementSibling : null;
+		if (!code || !code.classList.contains('bbc_code'))
+			return;
+		if (code.classList.contains('sid_code_collapsed'))
+			sidExpandCode(code, btn);
+		else
+			sidCollapseCode(code, btn);
+	});
+
 	// Admin dashboard tidy-up.
 	var adminContent = document.getElementById('admin_content');
 	if (adminContent) {
