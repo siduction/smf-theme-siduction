@@ -2038,24 +2038,90 @@ dl.settings dd {
 	overflow-y: auto;
 }
 
-/* SMF wraps .scrollable popups (#alerts_menu, #pm_menu) in the jQuery
-   customScrollbar plugin, which measures the viewport before the AJAX content
-   has loaded and collapses the panel to an empty sliver. Neutralize the
-   plugin's wrapper and fall back to the native scroll declared above. */
+/* Alerts & PM popups (#alerts_menu, #pm_menu).
+   SMF wraps these .scrollable popups in the jQuery customScrollbar plugin, which
+   measures the viewport before the AJAX content has loaded and collapses the
+   panel to an empty sliver. Neutralize the plugin's wrapper and fall back to the
+   native scroll declared above. */
 #alerts_menu .viewport,
 #pm_menu .viewport {
 	height: auto !important;
 	overflow: visible !important;
 }
 
-#alerts_menu .overview,
-#pm_menu .overview {
-	position: static !important;
-}
-
 #alerts_menu .scroll-bar,
 #pm_menu .scroll-bar {
 	display: none !important;
+}
+
+/* Lay the popup out as a panel: unread list / empty state on top, a quiet action
+   bar (mark read / settings / view all) as a footer. Without this the markup
+   inherits the nav-dropdown's full-width block links, which break the floated
+   options row and turn the .button links into clunky full-width bars. */
+#alerts_menu .overview,
+#pm_menu .overview {
+	display: flex;
+	flex-direction: column;
+	padding: .3rem;
+	position: static !important; /* undo customScrollbar's absolute positioning */
+}
+
+#alerts_menu .alert_bar,
+#pm_menu .pm_bar {
+	order: 2;
+	display: flex;
+	flex-direction: column;
+	gap: .4rem;
+	margin-top: .4rem;
+	padding-top: .45rem;
+	border-top: 1px solid var(--border);
+}
+
+#alerts_menu .alerts_opts,
+#pm_menu .pm_sending {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: .5rem;
+}
+
+#alerts_menu .alerts_opts a,
+#pm_menu .pm_sending a {
+	float: none;
+	display: inline-flex;
+	white-space: nowrap;
+	padding: .25rem .4rem;
+	font-size: .8rem;
+	color: var(--text-muted);
+	border-radius: var(--radius-sm);
+}
+
+#alerts_menu .alerts_opts a:hover,
+#pm_menu .pm_sending a:hover {
+	color: var(--text);
+	background: var(--bg-surface-2);
+}
+
+#alerts_menu .alerts_box,
+#pm_menu .pm_mailbox {
+	display: flex;
+	gap: .35rem;
+}
+
+#alerts_menu .alerts_box .button,
+#pm_menu .pm_mailbox .button {
+	display: inline-flex;
+	flex: 1;
+	justify-content: center;
+	font-size: .82rem;
+}
+
+#alerts_menu .no_unread,
+#pm_menu .no_unread {
+	padding: .7rem;
+	font-size: .85rem;
+	color: var(--text-muted);
+	text-align: center;
 }
 
 /* ==========================================================================
