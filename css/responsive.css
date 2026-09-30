@@ -262,4 +262,10 @@
 	.mobile_buttons {
 		display: block;
 	}
+
+	/* The popups carry the same actions; drop the desktop strips. */
+	.pagesection:has(> .mobile_buttons) > .buttonlist,
+	#moderationbuttons {
+		display: none;
+	}
 }

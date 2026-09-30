@@ -29,7 +29,7 @@ mkdir -p "$STAGE"
 rsync -a \
   --exclude='/.*' \
   --exclude='.DS_Store' \
-  --exclude='deploy.sh' --exclude='build.sh' --exclude='dist' \
+  --exclude='deploy.sh' --exclude='build.sh' --exclude='dist' --exclude='/smf' \
   "${ROOT}/" "$STAGE/"
 
 # Stamp the version (staging only).

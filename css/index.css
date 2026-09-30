@@ -1157,10 +1157,24 @@ a.subject {
 	font-size: .85rem;
 }
 
+/* Fixed two lines (date / "subject by member"), so every row has the same
+   height; an overlong second line ends in an ellipsis instead of wrapping. */
 .lastpost {
-	flex: 0 0 16rem;
+	flex: 0 0 22rem;
+	min-width: 0;
 	color: var(--text-muted);
 	font-size: .85rem;
+}
+
+.lastpost p {
+	overflow: hidden;
+}
+
+.lastpost .postby {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .board_stats p,
@@ -1197,6 +1211,17 @@ a.subject {
 .new_posts {
 	color: var(--sid-orange);
 	font-weight: 600;
+}
+
+/* Info center: body text lines up with the section headings. */
+#info_center p.inline {
+	margin: .6rem 0 1rem;
+	padding-inline: .9rem;
+	line-height: 1.6;
+}
+
+#info_center p.inline:last-child {
+	margin-bottom: .4rem;
 }
 
 /* Mark-all-read button row. */
@@ -1306,6 +1331,17 @@ a.subject {
 	font-size: .75rem;
 	line-height: 1;
 	letter-spacing: .08em;
+}
+
+/* SMF's stock group colours (inline style) are unreadable on the dark
+   scheme; map them to palette colours. Custom colours and [color] BBCode
+   in posts stay as set. */
+:is([style*="color: #FF0000" i], [style*="color:#FF0000" i]):not(.bbc_color) {
+	color: var(--danger) !important;
+}
+
+:is([style*="color: #0000FF" i], [style*="color:#0000FF" i]):not(.bbc_color) {
+	color: var(--info) !important;
 }
 
 /* "No gender set" - skip the entry in the poster sidebar so we don't show a
@@ -1759,6 +1795,28 @@ input[type="submit"]:is([name^="del" i], [name^="remove" i]):hover {
 	border-color: var(--sid-red-600);
 }
 
+/* Link buttons: SMF gives the delete entry of a button strip the key
+   "delete" (e.g. "Remove topic"). Package deletes only carry the URL. */
+a.button.button_strip_delete,
+a.button[href*=";sa=remove;package="] {
+	color: #fff;
+	background: var(--sid-red);
+	border-color: var(--sid-red);
+}
+
+a.button.button_strip_delete:hover,
+a.button[href*=";sa=remove;package="]:hover {
+	color: #fff;
+	background: var(--sid-red-600);
+	border-color: var(--sid-red-600);
+}
+
+/* Small per-post / per-PM actions stay quiet: red text only. */
+.quickbuttons a:is([href*="action=deletemsg"], [href*="=delete;"]),
+.quickbuttons > li > a:is([href*="action=deletemsg"], [href*="=delete;"]):hover {
+	color: var(--danger);
+}
+
 .buttonlist {
 	display: flex;
 	flex-wrap: wrap;
@@ -2181,6 +2239,58 @@ dl.settings + :is(input[type="submit"], .button) {
 
 #display_head:has(> .floatleft) select {
 	float: none;
+}
+
+/* Each result gets a title bar like the admin section bars:
+   "board / subject" and the #number on top, date and author below. */
+.action_search2 #main_content_section .windowbg > .block {
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: flex-start;
+	gap: 1rem;
+	margin: -1rem -1rem .85rem;
+	padding: .6rem .9rem;
+	color: var(--text-on-brand);
+	background: var(--sid-navy);
+	border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.action_search2 #main_content_section .windowbg > .block .half_content {
+	flex: 1 1 auto;
+	min-width: 0;
+	float: none;
+}
+
+.action_search2 #main_content_section .windowbg > .block .page_number {
+	flex: 0 0 auto;
+	float: none;
+	font-weight: 600;
+	opacity: .75;
+}
+
+.action_search2 #main_content_section .windowbg > .block h5 {
+	margin: 0 0 .15rem;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.35;
+}
+
+.action_search2 #main_content_section .windowbg > .block h5 a,
+.action_search2 #main_content_section .windowbg > .block .smalltext :is(a, strong) {
+	color: var(--text-on-brand);
+}
+
+.action_search2 #main_content_section .windowbg > .block h5 a:first-child {
+	font-weight: 400;
+	opacity: .8;
+}
+
+.action_search2 #main_content_section .windowbg > .block .smalltext {
+	color: rgba(244, 247, 251, .7);
+}
+
+.action_search2 #main_content_section .windowbg > .block .smalltext a {
+	font-weight: 600;
 }
 
 mark.highlight {
