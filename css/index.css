@@ -929,6 +929,41 @@ a[class^="mobile_generic_menu"] {
 	color: var(--text-muted);
 }
 
+/* SMF stacks a second .information.noup (e.g. "detected accelerators") under
+   the first; show them as one card, spaced from the settings that follow. */
+.information.noup:has(+ .information.noup) {
+	border-bottom: 0;
+	border-radius: 0;
+}
+
+.information.noup + .information.noup {
+	padding-top: 0;
+	border-top: 0;
+	border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.information + :is(.windowbg, .roundframe) {
+	margin-top: .75rem;
+}
+
+/* Section titles inside a card (theme settings, profile pages ...). */
+:is(.windowbg, .roundframe) > .title_bar {
+	margin-block: 1.25rem .75rem;
+	border-radius: var(--radius);
+}
+
+:is(.windowbg, .roundframe) > .title_bar:first-child {
+	margin-top: 0;
+}
+
+/* A card nested directly in a card: drop the second frame. */
+.windowbg > .windowbg {
+	margin: 0;
+	padding: 0;
+	background: none;
+	border: 0;
+}
+
 .generic_list_wrapper {
 	background: var(--bg-surface);
 	border: 1px solid var(--border);
@@ -1183,14 +1218,35 @@ a.subject {
 	margin-top: 1rem;
 }
 
-#forumposts > div[id^="msg"] {
-	margin-bottom: 1rem;
+/* Posts sit inside #quickModForm. The cards carry the spacing, so the
+   <hr> SMF prints after every post is hidden here only. */
+#forumposts div[id^="msg"].windowbg,
+#pmFolder > div[id^="msg"].windowbg {
+	margin-bottom: 2rem;
+}
+
+/* PM list: sender and time repeated inside the subject cell, meant for
+   narrow screens where their own columns are hidden. */
+.pm_inline_time {
+	display: none;
+}
+
+.subject_title h5 {
+	margin: 0;
+	font-size: .95rem;
+}
+
+#forumposts hr.post_separator {
+	display: none;
 }
 
 /* A post: poster column on the left; body and footer stacked on the right. */
 .post_wrapper {
 	display: grid;
 	grid-template-columns: 12.5rem 1fr;
+	/* Spare height from a tall poster column goes to the body row, not the
+	   (often empty) signature row, so the buttons can sit at the bottom. */
+	grid-template-rows: 1fr auto;
 	gap: 0 1.2rem;
 }
 
@@ -1201,9 +1257,15 @@ a.subject {
 }
 
 .postarea {
+	display: flex;
+	flex-direction: column;
 	grid-column: 2;
 	grid-row: 1;
 	min-width: 0;
+}
+
+.postarea > .under_message {
+	margin-top: auto;
 }
 
 .moderatorbar {
@@ -1237,6 +1299,13 @@ a.subject {
 	margin: 0;
 	padding: 0;
 	list-style: none;
+}
+
+/* Membergroup stars as emoji squares (theme.js). */
+.icons .group_icon {
+	font-size: .75rem;
+	line-height: 1;
+	letter-spacing: .08em;
 }
 
 /* "No gender set" - skip the entry in the poster sidebar so we don't show a
@@ -1463,6 +1532,95 @@ a.subject {
 	background: var(--bg-surface-3);
 }
 
+/* Post form: subject / icon rows, extra options and the submit row. */
+#post_header {
+	display: grid;
+	grid-template-columns: max-content minmax(0, 1fr);
+	align-items: center;
+	gap: .6rem 1rem;
+	margin: 0 0 1rem;
+}
+
+#post_header dt {
+	clear: none;
+	margin: 0;
+	font-weight: 500;
+}
+
+#post_header dd {
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	margin: 0;
+}
+
+#post_header #subject {
+	width: 100%;
+	max-width: 40rem;
+}
+
+#post_settings ul {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+	gap: .35rem 1rem;
+	margin: .5rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+#post_settings label {
+	display: inline-flex;
+	align-items: center;
+	gap: .4rem;
+	font-size: .88rem;
+	cursor: pointer;
+}
+
+#post_confirm_buttons {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: .5rem 1rem;
+	margin-top: 1rem;
+	padding-top: .75rem;
+	border-top: 1px solid var(--border);
+}
+
+#post_confirm_buttons .smalltext {
+	margin-inline-end: auto;
+}
+
+.post_button_container {
+	display: flex;
+	gap: .35rem;
+}
+
+/* Topic summary below the reply form. */
+#recent [id^="msg"] > div:first-child {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 .25rem;
+}
+
+#recent [id^="msg"] h5 {
+	float: none;
+	margin: 0;
+	font-size: .95rem;
+}
+
+#recent [id^="msg"] h5 span {
+	font-weight: normal;
+	color: var(--text-muted);
+}
+
+#recent .list_posts {
+	margin-top: .5rem;
+	font-size: .92rem;
+	line-height: 1.6;
+	color: var(--text);
+}
+
 /* Quotes & code in posts */
 blockquote,
 .bbc_standard_quote,
@@ -1616,6 +1774,16 @@ input[type="submit"]:is([name^="del" i], [name^="remove" i]):hover {
 	list-style: none;
 }
 
+/* Space between neighbouring buttons. SMF often prints them without any
+   whitespace in between; containers that already use gap reset it below. */
+:is(.button, input[type="submit"], input[type="button"], button.button) + :is(.button, input[type="submit"], input[type="button"], button.button) {
+	margin-inline-start: .35rem;
+}
+
+:is(.buttonlist, .buttonrow, .quickbuttons, .post_button_container, .pagesection > .floatright, .additional_row > .floatright, .admin_search, #search_form) > :is(.button, input[type="submit"], input[type="button"], button.button) {
+	margin-inline-start: 0;
+}
+
 .buttonrow {
 	display: flex;
 	flex-wrap: wrap;
@@ -1699,7 +1867,7 @@ input[type="submit"]:is([name^="del" i], [name^="remove" i]):hover {
 .descbox,
 .information.error {
 	padding: .8rem 1rem;
-	margin-block: .25rem;
+	margin-block: .75rem;
 	border: 1px solid transparent;
 	border-radius: var(--radius);
 }
@@ -2070,15 +2238,16 @@ mark.highlight {
 	column-gap: 1rem;
 }
 
-/* Button groups SMF floats next to the page links or filter text. */
-.pagesection > .floatright,
+/* Button groups SMF floats next to the page links or filter text.
+   .mobile_buttons is left alone: responsive.css shows it on phones only. */
+.pagesection > .floatright:not(.mobile_buttons),
 .additional_row > .floatright {
 	display: flex;
 	flex-wrap: wrap;
 	gap: .35rem;
 }
 
-.pagesection > .floatright {
+.pagesection > .floatright:not(.mobile_buttons) {
 	float: none;
 }
 
@@ -2205,9 +2374,13 @@ mark.highlight {
 	display: block;
 }
 
+/* On click SMF's script.js writes page-based top/left/height inline, which
+   lands far off inside the positioned .buttonlist. Keep the CSS placement. */
 .buttonlist > .top_menu {
-	top: 100%;
+	top: 100% !important;
 	right: 0;
+	left: auto !important;
+	height: auto !important;
 	margin-top: 0;
 }
 
@@ -2229,6 +2402,37 @@ mark.highlight {
 .notify_dropdown a span {
 	color: var(--text-muted);
 	font-size: .85em;
+}
+
+/* Mobile "User actions" / "Moderation" popups: hidden until SMF calls
+   .show(), then a modal card over a dimmed page. */
+#mobile_action,
+#mobile_moderation {
+	display: none;
+	position: fixed;
+	inset: 0;
+	z-index: 300;
+	padding: 10vh 1rem 1rem;
+	overflow-y: auto;
+	background: rgba(0, 0, 0, .6);
+}
+
+#mobile_action .popup_window,
+#mobile_moderation .popup_window {
+	max-width: 28rem;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+#mobile_action .buttonlist,
+#mobile_moderation .buttonlist {
+	flex-direction: column;
+	padding: .75rem;
+}
+
+#mobile_action .buttonlist .button,
+#mobile_moderation .buttonlist .button {
+	justify-content: flex-start;
 }
 
 /* Profile menu popup. */
@@ -2391,21 +2595,87 @@ mark.highlight {
 	gap: .5rem;
 }
 
+/* Wide enough that "Sent items" and friends stay on one line. */
+#alerts_menu,
+#pm_menu {
+	min-width: 21rem;
+}
+
+/* Every footer action as a compact button of the same height. */
 #alerts_menu .alerts_opts a,
-#pm_menu .pm_sending a {
+#pm_menu .pm_sending a,
+#alerts_menu .alerts_box .button,
+#pm_menu .pm_mailbox .button {
 	float: none;
 	display: inline-flex;
-	white-space: nowrap;
-	padding: .25rem .4rem;
+	align-items: center;
+	justify-content: center;
+	gap: .3rem;
+	margin: 0;
+	padding: .3rem .6rem;
 	font-size: .8rem;
-	color: var(--text-muted);
-	border-radius: var(--radius-sm);
+	font-weight: 500;
+	line-height: 1.4;
+	white-space: nowrap;
+	color: var(--text);
+	background: var(--bg-surface-2);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
 }
 
 #alerts_menu .alerts_opts a:hover,
-#pm_menu .pm_sending a:hover {
-	color: var(--text);
-	background: var(--bg-surface-2);
+#pm_menu .pm_sending a:hover,
+#alerts_menu .alerts_box .button:hover,
+#pm_menu .pm_mailbox .button:hover {
+	background: var(--bg-surface-3);
+	border-color: var(--text-faint);
+	text-decoration: none;
+}
+
+/* Two buttons per row: same width in the PM popup; in the alerts popup the
+   longer "mark read" label takes the room it needs. */
+#pm_menu .pm_sending a {
+	flex: 1;
+}
+
+#alerts_menu .alerts_opts a {
+	flex: 1 1 auto;
+}
+
+#pm_menu .pm_sending a[href$="sa=send"]::before,
+#pm_menu .pm_sending a[href$="sa=settings"]::before,
+#pm_menu .pm_mailbox a[href$="action=pm"]::before,
+#pm_menu .pm_mailbox a[href$="f=sent"]::before,
+#alerts_menu .alerts_opts a[href*="sa=markread"]::before,
+#alerts_menu .alerts_opts a.floatright::before,
+#alerts_menu .alerts_box .button::before {
+	font-family: "bootstrap-icons";
+	font-size: .85em;
+}
+
+#alerts_menu .alerts_opts a[href*="sa=markread"]::before {
+	content: "\f26f"; /* check2-all */
+}
+
+#alerts_menu .alerts_box .button::before {
+	content: "\f102"; /* alarm */
+}
+
+#pm_menu .pm_sending a[href$="sa=send"]::before {
+	content: "\f64d"; /* plus-lg */
+}
+
+#pm_menu .pm_mailbox a[href$="action=pm"]::before {
+	content: "\f32f"; /* envelope */
+}
+
+#pm_menu .pm_mailbox a[href$="f=sent"]::before {
+	content: "\f6c0"; /* send (paper plane) */
+}
+
+#pm_menu .pm_sending a[href$="sa=settings"]::before,
+#alerts_menu .alerts_opts a.floatright::before {
+	content: "\f3e5"; /* gear */
 }
 
 #alerts_menu .alerts_box,
@@ -2416,10 +2686,7 @@ mark.highlight {
 
 #alerts_menu .alerts_box .button,
 #pm_menu .pm_mailbox .button {
-	display: inline-flex;
 	flex: 1;
-	justify-content: center;
-	font-size: .82rem;
 }
 
 #alerts_menu .no_unread,

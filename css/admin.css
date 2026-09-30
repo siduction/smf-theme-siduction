@@ -172,6 +172,13 @@ ul[id^="category_"] > li.windowbg > br {
 	display: none;
 }
 
+/* --- Maintenance tasks: button on its own line below the description ---- */
+#admin_content .windowbg > form > p > input.button {
+	display: flex;
+	width: max-content;
+	margin-top: .6rem;
+}
+
 /* --- Error log entries ------------------------------------------------- */
 /* SMF builds each entry from floats, <br> lines and an <hr>; lay it out as
    header (counter, date, checkbox), a details block and the message. */

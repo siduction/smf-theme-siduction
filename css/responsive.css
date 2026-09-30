@@ -86,6 +86,7 @@
 	/* Stack the post layout into a single column. */
 	.post_wrapper {
 		grid-template-columns: 1fr;
+		grid-template-rows: none;
 	}
 
 	.poster,
@@ -207,6 +208,15 @@
 		flex-direction: column;
 	}
 
+	#post_header {
+		grid-template-columns: 1fr;
+		gap: .25rem;
+	}
+
+	#post_header dd + dt {
+		margin-top: .5rem;
+	}
+
 	/* The standalone login page scrolls with the page instead of floating over
 	   the header; the AJAX overlay stays modal. */
 	div.login:has(form#frmLogin),
@@ -230,18 +240,25 @@
 	.hide_720 {
 		display: none !important;
 	}
+
+	/* PM list: fold date and sender into the subject cell. */
+	.pm_time,
+	.pm_from_to {
+		display: none;
+	}
+
+	.pm_inline_time {
+		display: inline;
+	}
 }
 
-/* Mobile-only action bars rendered by inherited templates. */
-#mobile_action,
-#mobile_moderation,
+/* Mobile-only "User actions" / "Moderation" buttons. The popups they open
+   (#mobile_action, #mobile_moderation) stay hidden until SMF's .show(). */
 .mobile_buttons {
 	display: none;
 }
 
 @media (max-width: 720px) {
-	#mobile_action,
-	#mobile_moderation,
 	.mobile_buttons {
 		display: block;
 	}

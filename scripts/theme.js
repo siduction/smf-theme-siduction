@@ -41,6 +41,30 @@ $(function() {
 		$('.mobile_user_menu').attr('aria-expanded', 'false');
 	});
 
+	// Membergroup stars: swap SMF's default coloured squares for emoji.
+	// Custom or unknown icon files stay images.
+	var groupIcons = {
+		'iconadmin.png': '🟥', // red square
+		'icongmod.png': '🟦',  // blue square
+		'iconmod.png': '🟩'    // green square
+	};
+	$('.icons img[src*="/membericons/"]').each(function() {
+		var file = this.getAttribute('src').split('/').pop();
+		if (!groupIcons[file])
+			return;
+		var span = document.createElement('span');
+		span.className = 'group_icon';
+		span.textContent = groupIcons[file];
+		span.setAttribute('aria-hidden', 'true');
+		this.replaceWith(span);
+	});
+
+	// Mobile action popups: a tap on the dimmed backdrop closes them too.
+	$('#mobile_action, #mobile_moderation').on('click', function(e) {
+		if (e.target === this)
+			$(this).hide();
+	});
+
 	$('.postarea').on('click', '.bbc_img.resized', function() {
 		$(this).toggleClass('original_size');
 	});
@@ -169,24 +193,33 @@ $(function() {
 
 			var iframe = editor.getContentAreaContainer();
 			var container = iframe.closest('.sceditor-container');
-			if (!container || container.dataset.sidReady)
+			if (!container)
 				return;
-			container.dataset.sidReady = '1';
 
-			// Inject the theme stylesheet into the editor iframe.
-			var addEditorCss = function() {
-				var doc = iframe.contentDocument;
-				if (!doc || doc.getElementById('sid_editor_css'))
-					return;
-				var link = doc.createElement('link');
-				link.id = 'sid_editor_css';
-				link.rel = 'stylesheet';
-				link.href = smf_theme_url + '/css/jquery.sceditor.default.css';
-				doc.head.appendChild(link);
-			};
-			addEditorCss();
-			iframe.addEventListener('load', addEditorCss);
+			if (!container.dataset.sidReady) {
+				container.dataset.sidReady = '1';
 
+				// Inject the theme stylesheet into the editor iframe.
+				var addEditorCss = function() {
+					var doc = iframe.contentDocument;
+					if (!doc || doc.getElementById('sid_editor_css'))
+						return;
+					var link = doc.createElement('link');
+					link.id = 'sid_editor_css';
+					link.rel = 'stylesheet';
+					link.href = smf_theme_url + '/css/jquery.sceditor.default.css';
+					doc.head.appendChild(link);
+				};
+				addEditorCss();
+				iframe.addEventListener('load', addEditorCss);
+
+				// sw.js blanks smiley images, so keep typed codes as text in the
+				// WYSIWYG view; the posted message still renders them as emoji.
+				if (typeof editor.emoticons === 'function')
+					editor.emoticons(false);
+			}
+
+			// The smiley row can be added after the editor itself.
 			$(container).find('.sceditor-insertemoticon img').each(function() {
 				var emoji = window.sidSmileys && window.sidSmileys[this.alt];
 				if (!emoji)
@@ -204,8 +237,20 @@ $(function() {
 		});
 	}
 
+	// SMF builds its editors asynchronously (and again for quick reply / quick
+	// edit), so react to DOM changes instead of fixed load events.
+	var dressQueued = false;
+	new MutationObserver(function() {
+		if (dressQueued)
+			return;
+		dressQueued = true;
+		window.requestAnimationFrame(function() {
+			dressQueued = false;
+			dressEditors();
+		});
+	}).observe(document.body, { childList: true, subtree: true });
+
 	dressEditors();
-	$(window).on('load', dressEditors);
 });
 
 // Append a button to a button strip (core and mod compatibility hook).
