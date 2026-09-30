@@ -217,7 +217,7 @@ function template_body_above()
 			<div class="floatright header_tools">';
 
 	echo '
-				<button type="button" id="color-mode-toggle" class="color_mode_toggle" aria-label="', $txt['color_mode_toggle'], '" title="', $txt['color_mode_toggle'], '"></button>';
+				<button type="button" id="color-mode-toggle" class="color_mode_toggle" aria-label="', $txt['color_mode_toggle'], '" title="', $txt['color_mode_toggle'], '" data-label-auto="', $txt['color_mode_auto'], '" data-label-light="', $txt['color_mode_light'], '" data-label-dark="', $txt['color_mode_dark'], '"></button>';
 
 	if (!empty($modSettings['userLanguage']) && !empty($context['languages']) && count($context['languages']) > 1)
 	{
@@ -333,7 +333,7 @@ function template_body_above()
 				</div>';
 
 	echo '
-				<a class="mobile_user_menu">
+				<a href="#main_menu" class="mobile_user_menu" role="button" aria-controls="main_menu" aria-expanded="false">
 					<span class="menu_icon"></span>
 					<span class="text_menu">', $txt['mobile_user_menu'], '</span>
 				</a>

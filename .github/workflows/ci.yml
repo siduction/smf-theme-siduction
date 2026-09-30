@@ -28,10 +28,10 @@ jobs:
           command -v xmllint >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils; }
           xmllint --noout theme_info.xml
 
-      - name: ShellCheck build.sh
+      - name: ShellCheck
         run: |
           command -v shellcheck >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck; }
-          shellcheck build.sh   # deploy.sh ist nicht im Repo (server-only) und wird lokal geprüft
+          shellcheck build.sh deploy.sh
 
       - name: Packaging smoke test
         run: |
@@ -39,23 +39,23 @@ jobs:
           ZIP="$(./build.sh 9.9.9-citest | tail -n1)"
           echo "Built: $ZIP"
 
-          # 1) Wrapper-Ordner + theme_info.xml vorhanden
+          # 1) Wrapper directory and theme_info.xml present
           unzip -l "$ZIP" | grep -q 'siduction/theme_info.xml' \
-            || { echo "FAIL: siduction/theme_info.xml fehlt im Zip"; exit 1; }
+            || { echo "FAIL: siduction/theme_info.xml missing from zip"; exit 1; }
 
-          # 2) Version korrekt eingebrannt (theme_info.xml UND @version)
+          # 2) Version stamped into theme_info.xml and @version
           unzip -p "$ZIP" siduction/theme_info.xml | grep -q '<version>9.9.9-citest</version>' \
-            || { echo "FAIL: Version nicht in theme_info.xml gestempelt"; exit 1; }
+            || { echo "FAIL: version not stamped into theme_info.xml"; exit 1; }
           unzip -p "$ZIP" siduction/index.template.php | grep -q '@version 9.9.9-citest' \
-            || { echo "FAIL: @version nicht in index.template.php gestempelt"; exit 1; }
+            || { echo "FAIL: @version not stamped into index.template.php"; exit 1; }
 
-          # 3) VCS/CI/Ops-Dateien dürfen NICHT im Zip sein
+          # 3) No VCS, CI or ops files in the zip
           if unzip -l "$ZIP" | grep -qE 'deploy\.sh|build\.sh|\.github|\.git/'; then
-            echo "FAIL: unerwünschte Dateien im Zip:"; unzip -l "$ZIP"; exit 1
+            echo "FAIL: unexpected files in zip:"; unzip -l "$ZIP"; exit 1
           fi
-          # kein verstecktes Top-Level-Verzeichnis (Tooling/Editor) im Zip
+          # No hidden top-level directories (tooling/editor) in the zip
           if unzip -l "$ZIP" | grep -qE ' siduction/\.[^/]+/'; then
-            echo "FAIL: verstecktes Verzeichnis im Zip:"; unzip -l "$ZIP"; exit 1
+            echo "FAIL: hidden directory in zip:"; unzip -l "$ZIP"; exit 1
           fi
 
-          echo "OK: Packaging-Assertions bestanden"
+          echo "OK: packaging checks passed"

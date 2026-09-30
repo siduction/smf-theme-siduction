@@ -150,9 +150,15 @@
 		flex-basis: 100%;
 	}
 
-	dl.settings {
+	dl.settings,
+	dl.register_form,
+	#search_options {
 		grid-template-columns: 1fr;
 		gap: .2rem .9rem;
+	}
+
+	#search_options dd + dt {
+		margin-top: .5rem;
 	}
 
 	.quickbuttons {
@@ -177,14 +183,45 @@
 	.header_tools {
 		flex-wrap: wrap;
 		justify-content: center;
+		width: 100%;
+	}
+
+	/* Let the search row shrink to the bar instead of overflowing both edges. */
+	#search_form {
+		flex: 1 1 100%;
+		min-width: 0;
 	}
 
 	#search_form input[type="search"] {
-		min-width: 7rem;
+		flex: 1 1 0;
+		width: auto;
+		min-width: 5rem;
+	}
+
+	#search_form select {
+		flex: 0 1 auto;
+		min-width: 0;
 	}
 
 	#footer ul {
 		flex-direction: column;
+	}
+
+	/* The standalone login page scrolls with the page instead of floating over
+	   the header; the AJAX overlay stays modal. */
+	div.login:has(form#frmLogin),
+	div.login:has(form#frmTfa) {
+		position: static;
+		transform: none;
+		width: auto;
+		max-height: none;
+		overflow: visible;
+		margin: 1.5rem auto 2rem;
+	}
+
+	body:has(div.login form#frmLogin):not(:has(#smf_popup))::before,
+	body:has(div.login form#frmTfa):not(:has(#smf_popup))::before {
+		content: none;
 	}
 }
 

@@ -23,6 +23,8 @@
 	--sid-blue: #5f8dd3;
 	--sid-orange: #ff7b00;
 	--sid-orange-600: #e06d00;
+	--sid-red: #dc3545;
+	--sid-red-600: #bb2d3b;
 
 	/* Surfaces & text */
 	--bg-body: #eef1f5;
@@ -439,13 +441,18 @@ a.bbc_link img {
 	list-style: none;
 }
 
-#top_info > li > a,
-#top_info > li.welcome {
+#top_info > li > a {
 	display: flex;
 	align-items: center;
 	gap: .35rem;
 	padding: .35rem .55rem;
 	border-radius: var(--radius);
+	color: var(--text-on-brand);
+}
+
+/* Plain text with an inline <strong>; flex would split off the trailing period. */
+#top_info > li.welcome {
+	padding: .35rem .55rem;
 	color: var(--text-on-brand);
 }
 
@@ -691,6 +698,11 @@ a.bbc_link img {
 	background: var(--bg-menu);
 	border-radius: var(--radius);
 	cursor: pointer;
+}
+
+.mobile_user_menu:hover {
+	color: var(--text-on-brand);
+	text-decoration: none;
 }
 
 .menu_icon::before {
@@ -946,7 +958,6 @@ table.table_grid {
 	color: var(--text);
 }
 
-.table_grid tbody tr:hover td,
 .table_grid tbody tr:hover td {
 	background: var(--bg-surface-2);
 }
@@ -1158,6 +1169,11 @@ a.subject {
 	display: flex;
 	justify-content: flex-end;
 	margin: .75rem 0;
+}
+
+/* Icon legend below the topic list: two floated columns. */
+#topic_icons p.floatleft {
+	margin-inline-end: 2rem;
 }
 
 /* ==========================================================================
@@ -1458,6 +1474,17 @@ blockquote,
 	border-radius: 0 var(--radius) var(--radius) 0;
 }
 
+blockquote cite {
+	display: block;
+	margin-bottom: .45rem;
+	padding-bottom: .35rem;
+	font-size: .8rem;
+	font-style: normal;
+	font-weight: 600;
+	color: var(--text-muted);
+	border-bottom: 1px solid var(--border);
+}
+
 .quoteheader,
 .codeheader {
 	margin: .5rem 0 0;
@@ -1467,6 +1494,17 @@ blockquote,
 	color: var(--text-muted);
 	background: var(--bg-surface-3);
 	border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.codeheader {
+	display: flex;
+	align-items: baseline;
+	gap: .75rem;
+}
+
+.codeheader .codeoperation {
+	font-weight: 500;
+	cursor: pointer;
 }
 
 .bbc_code,
@@ -1488,10 +1526,6 @@ pre {
 .bbc_code.sid_code_collapsed {
 	mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent);
 	-webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent);
-}
-
-.codeheader .smf_expand_code {
-	cursor: pointer;
 }
 
 code {
@@ -1552,6 +1586,19 @@ input[type="submit"]:hover,
 button.button[type="submit"]:hover {
 	background: var(--sid-orange-600);
 	border-color: var(--sid-orange-600);
+}
+
+/* Destructive actions. SMF names these submits del* / remove*
+   (delete_members, delall, removeSelection, remove_triggers, ...). */
+input[type="submit"]:is([name^="del" i], [name^="remove" i]) {
+	color: #fff;
+	background: var(--sid-red);
+	border-color: var(--sid-red);
+}
+
+input[type="submit"]:is([name^="del" i], [name^="remove" i]):hover {
+	background: var(--sid-red-600);
+	border-color: var(--sid-red-600);
 }
 
 .buttonlist {
@@ -1772,13 +1819,237 @@ dl.settings dt {
 	font-weight: 500;
 }
 
+/* Registration form (signup page and admin "register new member"). */
+dl.register_form {
+	display: grid;
+	grid-template-columns: minmax(12rem, 1fr) 2fr;
+	gap: .75rem .9rem;
+	align-items: start;
+	margin: 0 0 1rem;
+}
+
+dl.register_form dt .smalltext {
+	display: block;
+	margin-top: .1rem;
+	font-weight: normal;
+}
+
+dl.register_form dd {
+	margin: 0;
+}
+
+dl.register_form input[type="text"],
+dl.register_form input[type="email"],
+dl.register_form input[type="password"] {
+	width: 100%;
+	max-width: 26rem;
+}
+
+.nolist {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
 dl.settings dd {
 	margin: 0;
+}
+
+/* Several fields in one cell (e.g. password + confirmation), split by <br>;
+   the grid gap only separates rows. */
+dl.settings dd > br + :is(input, select, textarea) {
+	margin-top: .5rem;
+}
+
+dl.settings + :is(input[type="submit"], .button) {
+	margin-top: 1rem;
 }
 
 /* Search form in the top bar */
 #search_form input[type="search"] {
 	min-width: 9rem;
+}
+
+/* ==========================================================================
+   Search page
+   ========================================================================== */
+#search_options {
+	grid-template-columns: minmax(8rem, 12rem) 1fr;
+	align-items: center;
+}
+
+#search_options dt.options {
+	align-self: start;
+	text-align: start;
+}
+
+#search_options input[type="search"],
+#search_options input[type="text"] {
+	width: 100%;
+	max-width: 32rem;
+}
+
+#search_options .smalltext {
+	display: block;
+	margin-top: .2rem;
+}
+
+#search_options br {
+	display: none;
+}
+
+#search_options #minage,
+#search_options #maxage {
+	width: 5.5rem;
+}
+
+#search_options dd.options ul,
+.boardslist ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#search_options dd.options li + li {
+	margin-top: .25rem;
+}
+
+#search_options dd.options label,
+.boardslist label {
+	cursor: pointer;
+}
+
+/* Board picker: one frame instead of fieldset > roundframe > title bar. */
+#searchform fieldset {
+	margin: 1rem 0 0;
+	padding: 0;
+	border: 0;
+}
+
+#searchform fieldset .roundframe {
+	padding: 0;
+	overflow: hidden;
+}
+
+#searchform fieldset .title_bar {
+	border-radius: 0;
+}
+
+#searchform fieldset .titlebg a {
+	color: var(--text);
+}
+
+.boardslist {
+	padding: .85rem 1rem 0;
+}
+
+.boardslist > ul {
+	columns: 2 16rem;
+	column-gap: 2rem;
+}
+
+.boardslist > ul > li {
+	break-inside: avoid;
+	margin-bottom: .85rem;
+}
+
+.boardslist > ul > li > a {
+	font-weight: 600;
+}
+
+.boardslist ul ul {
+	margin-top: .3rem;
+}
+
+.boardslist ul ul ul {
+	padding-inline-start: 1.4rem;
+}
+
+.boardslist li li {
+	padding-block: .12rem;
+}
+
+#searchform fieldset .padding {
+	display: flex;
+	align-items: center;
+	gap: .4rem;
+	padding: .75rem 1rem;
+	border-top: 1px solid var(--border);
+}
+
+#searchform fieldset .padding .button {
+	margin-inline-start: auto;
+}
+
+#searchform fieldset br.clear {
+	display: none;
+}
+
+/* Results header: title, "Adjust Search Parameters" and the sort select
+   are floated by SMF and would hang out of the box. */
+#display_head:has(> .floatleft) {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: .6rem 1rem;
+}
+
+#display_head:has(> .floatleft) > h2 {
+	flex-basis: 100%;
+	margin: 0;
+}
+
+#display_head:has(> .floatleft) > .floatleft,
+#display_head:has(> .floatleft) > .floatright {
+	float: none;
+}
+
+#display_head:has(> .floatleft) > .floatright {
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	margin-inline-start: auto;
+}
+
+#display_head:has(> .floatleft) select {
+	float: none;
+}
+
+mark.highlight {
+	padding: 0 .1em;
+	color: #1c2230;
+	background: #ffd84d;
+	border-radius: 2px;
+}
+
+/* SMF collapse toggles (info center, search board picker). */
+.toggle_up,
+.toggle_down {
+	display: inline-block;
+	cursor: pointer;
+}
+
+.toggle_up::before,
+.toggle_down::before {
+	font-family: "bootstrap-icons";
+	font-size: .9rem;
+	line-height: 1;
+}
+
+.toggle_up::before {
+	content: "\f286"; /* chevron-up */
+}
+
+.toggle_down::before {
+	content: "\f282"; /* chevron-down */
+}
+
+.titlebg .toggle_up,
+.titlebg .toggle_down,
+.catbg .toggle_up,
+.catbg .toggle_down {
+	order: 1;
+	margin-inline-start: auto;
 }
 
 /* ==========================================================================
@@ -1796,6 +2067,30 @@ dl.settings dd {
 /* Right-align action buttons and page links. */
 .pagesection {
 	justify-content: flex-end;
+	column-gap: 1rem;
+}
+
+/* Button groups SMF floats next to the page links or filter text. */
+.pagesection > .floatright,
+.additional_row > .floatright {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .35rem;
+}
+
+.pagesection > .floatright {
+	float: none;
+}
+
+/* The loose filter text next to floated buttons: match the button height so
+   both sit on one centre line. */
+.additional_row:has(> .floatright) {
+	line-height: 2.1rem;
+}
+
+.additional_row > .floatright {
+	margin-inline-start: 1rem;
+	line-height: 1.4;
 }
 
 /* Print button: replace the text label with a printer glyph. */
@@ -2026,10 +2321,21 @@ dl.settings dd {
 .popup_heading {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	gap: .5rem;
 	padding: .6rem .85rem;
 	font-weight: 600;
 	border-bottom: 1px solid var(--border);
+}
+
+/* SMF puts the close link first; keep icon and title together on the left. */
+.popup_heading .hide_popup {
+	order: 1;
+	margin-inline-start: auto;
+}
+
+/* Content links in overlays (login etc.); the rule above is meant for menus. */
+#smf_popup .popup_window a:not(.button, .hide_popup) {
+	color: var(--link);
 }
 
 .notify_dropdown,
@@ -2430,6 +2736,9 @@ div.login:has(form#frmTfa),
 	transform: translate(-50%, -50%);
 	width: min(28rem, calc(100% - 2rem));
 	max-width: none;
+	max-height: calc(100vh - 2rem);
+	max-height: calc(100dvh - 2rem);
+	overflow-y: auto;
 	margin: 0;
 	z-index: 100;
 }
@@ -2440,6 +2749,8 @@ div.login:has(form#frmTfa),
 	position: static;
 	transform: none;
 	width: auto;
+	max-height: none;
+	overflow: visible;
 	margin: 0;
 	z-index: auto;
 }
@@ -2457,7 +2768,9 @@ body:has(.popup_window form#frmTfa)::before {
 	content: "";
 	position: fixed;
 	inset: 0;
-	background: rgba(0, 0, 0, .55);
+	background: rgba(0, 0, 0, .65);
+	-webkit-backdrop-filter: blur(3px);
+	backdrop-filter: blur(3px);
 	z-index: 99;
 }
 
@@ -2518,4 +2831,18 @@ body:has(.popup_window form#frmTfa)::before {
 #tfaCode .button,
 #tfaBackup .button {
 	width: 100%;
+}
+
+/* ==========================================================================
+   SMF visibility helper
+   ========================================================================== */
+/* Kept last so it wins over same-specificity display rules (.button etc.),
+   matching the default theme. */
+span.member.hidden {
+	display: inline;
+	font-style: italic;
+}
+
+.hidden {
+	display: none;
 }

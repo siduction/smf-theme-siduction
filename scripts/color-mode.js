@@ -30,7 +30,19 @@
 		if (!button)
 			return;
 
-		button.setAttribute('data-mode', readMode());
+		var baseLabel = button.getAttribute('aria-label') || '';
+
+		// Show the current scheme in the tooltip and accessible name.
+		function showMode(mode) {
+			button.setAttribute('data-mode', mode);
+			var name = button.getAttribute('data-label-' + mode);
+			if (name) {
+				button.setAttribute('aria-label', baseLabel + ': ' + name);
+				button.title = baseLabel + ': ' + name;
+			}
+		}
+
+		showMode(readMode());
 
 		button.addEventListener('click', function () {
 			var next = MODES[(MODES.indexOf(readMode()) + 1) % MODES.length];
@@ -38,7 +50,7 @@
 				window.localStorage.setItem(STORAGE_KEY, next);
 			} catch (e) {}
 			applyMode(next);
-			button.setAttribute('data-mode', next);
+			showMode(next);
 		});
 	}
 

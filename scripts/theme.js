@@ -30,12 +30,15 @@ $(function() {
 			parseInt($(this).attr('data-perpage'), 10));
 	});
 
-	$('.mobile_user_menu').on('click', function() {
-		$('#main_menu').toggleClass('is-open');
+	$('.mobile_user_menu').on('click', function(e) {
+		e.preventDefault();
+		var open = $('#main_menu').toggleClass('is-open').hasClass('is-open');
+		this.setAttribute('aria-expanded', open ? 'true' : 'false');
 	});
 	$('#main_menu .hide_popup').on('click', function(e) {
 		e.preventDefault();
 		$('#main_menu').removeClass('is-open');
+		$('.mobile_user_menu').attr('aria-expanded', 'false');
 	});
 
 	$('.postarea').on('click', '.bbc_img.resized', function() {

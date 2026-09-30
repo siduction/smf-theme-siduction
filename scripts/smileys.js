@@ -17,15 +17,19 @@
 		':-X':  '🤐',
 		':-\\': '😐',
 		':-*':  '😘',
-		":'(":  '😢'
+		":'(":  '😢',
+		'>:D':  '😈',
+		'O:-)': '😇'
 	};
 
+	// sw.js blanks every smiley image, so a code without an emoji falls back
+	// to its text instead of disappearing.
 	function swap(img) {
-		var emoji = window.sidSmileys[img.getAttribute('alt')];
-		if (!emoji)
+		var code = img.getAttribute('alt');
+		if (!code)
 			return;
 		img.removeAttribute('src');
-		img.replaceWith(document.createTextNode(emoji));
+		img.replaceWith(document.createTextNode(window.sidSmileys[code] || code));
 	}
 
 	new MutationObserver(function(records) {

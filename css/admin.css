@@ -56,19 +56,26 @@
 #live_news .catbg::after,
 .admin_intro_bar .catbg::after {
 	margin-left: auto;
-	content: "\25BE";
-	font-size: .8em;
+	font-family: "bootstrap-icons";
+	font-size: .85rem;
+	content: "\f282"; /* chevron-down */
 }
 
 #live_news.is-collapsed .catbg::after,
 .admin_intro_bar.is-collapsed .catbg::after {
-	content: "\25B8";
+	content: "\f285"; /* chevron-right */
+}
+
+/* theme.js moves these below the section boxes. */
+#admin_content > #support_info,
+#admin_content > #live_news {
+	margin-top: 1rem;
 }
 
 /* --- Admin home: section boxes (full width, stacked) -------------------- */
 fieldset.admin_group {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
 	gap: .5rem;
 	margin: 1rem 0 0;
 	padding: 1rem;
@@ -86,7 +93,6 @@ fieldset.admin_group legend {
 
 fieldset.admin_group > a {
 	display: flex;
-	flex: 1 1 240px;
 	align-items: center;
 	gap: .55rem;
 	padding: .55rem .75rem;
@@ -132,6 +138,152 @@ fieldset.admin_group [class*=" large_"] {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
+}
+
+/* --- Manage boards: one row per board, name left, buttons right -------- */
+ul[id^="category_"] > li.windowbg {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: .5rem 1rem;
+	/* The inline padding-left carries the child-board indent; keep it. */
+	padding-block: .5rem;
+	padding-inline-end: .75rem;
+	margin-bottom: .35rem;
+}
+
+ul[id^="category_"] > li.windowbg > .floatleft,
+ul[id^="category_"] > li.windowbg > .floatright {
+	float: none;
+}
+
+ul[id^="category_"] > li.windowbg > .floatleft {
+	margin-inline-start: .5rem;
+}
+
+ul[id^="category_"] > li.windowbg > .floatright {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .35rem;
+	margin-inline-start: auto;
+}
+
+ul[id^="category_"] > li.windowbg > br {
+	display: none;
+}
+
+/* --- Error log entries ------------------------------------------------- */
+/* SMF builds each entry from floats, <br> lines and an <hr>; lay it out as
+   header (counter, date, checkbox), a details block and the message. */
+.windowbg:has(> .counter + .topic_details) {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 0 .6rem;
+	padding: .85rem 1rem;
+}
+
+.windowbg:has(> .counter + .topic_details) > .counter {
+	padding: 0 !important; /* inline padding from SMF */
+	align-self: center;
+	font-size: .8rem;
+	font-weight: 600;
+	color: var(--text-faint);
+}
+
+.windowbg:has(> .counter + .topic_details) > .counter::before {
+	content: "#";
+}
+
+.windowbg:has(> .counter + .topic_details) > .topic_details {
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.windowbg:has(> .counter + .topic_details) > .topic_details h5 {
+	display: flex;
+	align-items: center;
+	gap: .35rem;
+	margin: 0;
+	font-size: .9rem;
+	font-weight: 500;
+}
+
+.windowbg:has(> .counter + .topic_details) > .topic_details .floatright {
+	float: none;
+}
+
+.windowbg:has(> .counter + .topic_details) > .topic_details hr {
+	display: none;
+}
+
+.windowbg:has(> .counter + .topic_details) > :not(.counter, .topic_details) {
+	grid-column: 1 / -1;
+}
+
+/* Who / IP / session / URL / file, and the backtrace link. */
+.windowbg:has(> .counter + .topic_details) > div:not([class]) {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .25rem 1.5rem;
+	margin-top: .6rem;
+	padding-top: .6rem;
+	border-top: 1px solid var(--border);
+	font-size: .85rem;
+	line-height: 1.75;
+}
+
+.windowbg:has(> .counter + .topic_details) .half_content {
+	flex: 1 1 22rem;
+	min-width: 0;
+	float: none;
+	overflow-wrap: anywhere;
+}
+
+.windowbg:has(> .counter + .topic_details) .half_content + .half_content {
+	flex: 0 0 auto;
+}
+
+.windowbg:has(> .counter + .topic_details) .half_content strong.floatright {
+	float: none;
+	font-weight: 500;
+}
+
+/* Type of error, then the message box: filter icon left, content right. */
+.windowbg:has(> .counter + .topic_details) > .post {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: .5rem 0;
+	margin-top: .6rem;
+	font-size: .85rem;
+}
+
+.windowbg:has(> .counter + .topic_details) > .post > br {
+	display: none;
+}
+
+.windowbg:has(> .counter + .topic_details) > .post > .codeheader {
+	margin: 0;
+}
+
+.windowbg:has(> .counter + .topic_details) > .post > .bbc_code {
+	grid-column: 1 / -1;
+	margin-top: -.5rem;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.windowbg:has(> .counter + .topic_details) .main_icons.filter {
+	float: none;
+	margin-inline-end: .35rem;
+	font-size: .8rem;
+	color: var(--text-faint);
+}
+
+.windowbg:has(> .counter + .topic_details) a:hover .main_icons.filter {
+	color: var(--link);
 }
 
 @media (max-width: 768px) {
