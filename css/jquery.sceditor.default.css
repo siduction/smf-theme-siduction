@@ -1,13 +1,17 @@
 /* Siduction theme - SCEditor WYSIWYG content area.
  *
  * This is loaded into the editor iframe, which is its own document, on top of
- * SCEditor's default content stylesheet. The iframe carries no data-theme
- * attribute, so dark mode here follows the operating system.
+ * SCEditor's default content stylesheet. theme.js copies the page's colour
+ * scheme onto the iframe's root as data-scheme="light|dark".
  */
 
 html {
 	height: 100%;
-	color-scheme: light dark;
+	color-scheme: light;
+}
+
+html[data-scheme="dark"] {
+	color-scheme: dark;
 }
 
 /* Match the post font and let the editable area fill the iframe, so a click
@@ -25,42 +29,38 @@ a {
 	color: #1f5fb8;
 }
 
-@media (prefers-color-scheme: dark) {
-	html {
-		background: #1c2027;
-	}
+html[data-scheme="dark"] {
+	background: #1c2027;
+}
 
-	html, p, code::before, table {
-		color: #e6e9ee;
-	}
+html[data-scheme="dark"],
+html[data-scheme="dark"] :is(p, table),
+html[data-scheme="dark"] code::before {
+	color: #e6e9ee;
+}
 
-	a {
-		color: #6ea8fe;
-	}
+html[data-scheme="dark"] a {
+	color: #6ea8fe;
+}
 
-	table, td {
-		border-color: #4a525f;
-	}
+html[data-scheme="dark"] :is(table, td, .floatleft, .floatright) {
+	border-color: #4a525f;
+}
 
-	code {
-		background: #14171c;
-		border-color: #343b46;
-	}
+html[data-scheme="dark"] code {
+	background: #14171c;
+	border-color: #343b46;
+}
 
-	blockquote {
-		background-color: #232831;
-		border-color: #343b46;
-	}
+html[data-scheme="dark"] blockquote {
+	background-color: #232831;
+	border-color: #343b46;
+}
 
-	blockquote cite {
-		border-bottom-color: #343b46;
-	}
+html[data-scheme="dark"] blockquote cite {
+	border-bottom-color: #343b46;
+}
 
-	blockquote cite::before {
-		color: #9aa4b2;
-	}
-
-	.floatleft, .floatright {
-		border-color: #4a525f;
-	}
+html[data-scheme="dark"] blockquote cite::before {
+	color: #9aa4b2;
 }

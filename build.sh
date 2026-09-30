@@ -24,7 +24,7 @@ mkdir -p "$STAGE"
 
 # Mirror theme files into staging.
 #   /.*       = strip all hidden top-level entries (VCS, CI, editor/tooling/OS dirs).
-#               The '/' anchor only matches the top level, so scripts/.htaccess is kept.
+#               The '/' anchor only matches the top level.
 #   .DS_Store = remove from subdirectories too.
 rsync -a \
   --exclude='/.*' \

@@ -180,6 +180,49 @@ $(function() {
 		ul.appendChild(li);
 	});
 
+	// The editor iframe is its own document and can't see the page's
+	// data-theme, so hand it the scheme the page is actually showing.
+	var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+	function pageScheme() {
+		var theme = document.documentElement.getAttribute('data-theme');
+		if (theme === 'light' || theme === 'dark')
+			return theme;
+		return darkQuery.matches ? 'dark' : 'light';
+	}
+
+	function syncEditorScheme(iframe) {
+		var doc = iframe.contentDocument;
+		if (doc && doc.documentElement)
+			doc.documentElement.setAttribute('data-scheme', pageScheme());
+	}
+
+	function syncAllEditorSchemes() {
+		$('.sceditor-container iframe').each(function() {
+			syncEditorScheme(this);
+		});
+	}
+
+	new MutationObserver(syncAllEditorSchemes)
+		.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+	darkQuery.addEventListener('change', syncAllEditorSchemes);
+
+	// Topic footer: moderation buttons first, then breadcrumb and jump-to
+	// sharing one row (styled as .topic_tools).
+	var jumpTo = document.getElementById('display_jump_to');
+	if (jumpTo) {
+		var crumbs = document.querySelectorAll('#main_content_section > .navigate_section');
+		var modButtons = document.getElementById('moderationbuttons');
+		var tools = document.createElement('div');
+		tools.className = 'topic_tools';
+		jumpTo.before(tools);
+		if (modButtons)
+			tools.before(modButtons);
+		if (crumbs.length)
+			tools.appendChild(crumbs[crumbs.length - 1]);
+		tools.appendChild(jumpTo);
+	}
+
 	function dressEditors() {
 		$('textarea').each(function() {
 			var editor;
@@ -201,6 +244,7 @@ $(function() {
 
 				// Inject the theme stylesheet into the editor iframe.
 				var addEditorCss = function() {
+					syncEditorScheme(iframe);
 					var doc = iframe.contentDocument;
 					if (!doc || doc.getElementById('sid_editor_css'))
 						return;
@@ -213,8 +257,8 @@ $(function() {
 				addEditorCss();
 				iframe.addEventListener('load', addEditorCss);
 
-				// sw.js blanks smiley images, so keep typed codes as text in the
-				// WYSIWYG view; the posted message still renders them as emoji.
+				// Keep typed smiley codes as text in the WYSIWYG view; the posted
+				// message renders them as emoji.
 				if (typeof editor.emoticons === 'function')
 					editor.emoticons(false);
 			}

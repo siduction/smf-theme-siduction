@@ -19,8 +19,7 @@ Content-Security-Policy.
 - [Bootstrap Icons](https://icons.getbootstrap.com/), bundled as a single woff2,
   replace SMF's `<img>` icon sprites — post icons, board status icons and the
   editor toolbar included.
-- Smileys render as Unicode emoji instead of GIFs. A small service worker keeps
-  the browser from fetching the original smiley images at all.
+- Smileys render as Unicode emoji instead of GIFs.
 - CSP-friendly: no inline `<script>`, no inline styles, no `on*` handlers.
   `script-src 'self'; style-src 'self'` is enough.
 - Responsive, with a collapsible menu on small screens, plus right-to-left
@@ -46,23 +45,21 @@ Content-Security-Policy.
 The theme ships its own English and German strings for the colour-scheme labels;
 everything else uses your forum's existing language packs.
 
-## The smiley service worker
+## Upgrading from 1.2.x
 
-Smileys are swapped to emoji in the page itself, so that part works everywhere.
-On top of that, `scripts/sw.js` answers requests for the old smiley GIFs with an
-empty image, so they never reach the network.
-
-To cover the whole site the worker has to be served with `Service-Worker-Allowed: /`.
-On Apache that header comes from `scripts/.htaccess`, which is included. On nginx
-or other servers, set the same header for `scripts/sw.js` yourself — or leave it,
-the emoji show up either way.
+Versions up to 1.2.2 shipped a service worker (`scripts/sw.js`) that blanked the
+smiley GIFs. It is gone; the theme unregisters it in visitors' browsers on their
+next page load. A `Service-Worker-Allowed` header you may have added to your web
+server config for it is no longer needed.
 
 ## Customising
 
 Open `css/index.css` and look at the `:root` block near the top. The brand
-colours, surfaces, text colours, radii and fonts are all there as variables, and
-the dark scheme overrides the same names a little further down. Change them in one
-place and the rest of the theme follows.
+colours, surfaces, text colours, radii and fonts are all there as variables.
+Colours that differ between the schemes are written as `light-dark(light, dark)`,
+so both values sit on the same line. Browsers without `light-dark()` (before 2024)
+fall back to the light values in the `@supports not` block right below; keep that
+block in sync when you change a light colour.
 
 ## Credits
 

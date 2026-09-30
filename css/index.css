@@ -14,8 +14,11 @@
 /* ==========================================================================
    Design tokens
    ========================================================================== */
+/* Every colour that changes with the scheme is written once as
+   light-dark(light, dark). The scheme itself comes from color-scheme: the
+   OS preference by default, or the toggle's data-theme attribute. */
 :root {
-	color-scheme: light;
+	color-scheme: light dark;
 
 	/* Siduction brand */
 	--sid-navy: #162d50;
@@ -27,36 +30,36 @@
 	--sid-red-600: #bb2d3b;
 
 	/* Surfaces & text */
-	--bg-body: #eef1f5;
-	--bg-surface: #ffffff;
-	--bg-surface-2: #f3f5f8;
-	--bg-surface-3: #e9edf2;
-	--bg-header: #ffffff;
-	--bg-menu: #162d50;
-	--bg-menu-hover: #20447a;
-	--bg-code: #f5f6f8;
-	--bg-input: #ffffff;
+	--bg-body: light-dark(#eef1f5, #14171c);
+	--bg-surface: light-dark(#ffffff, #1c2027);
+	--bg-surface-2: light-dark(#f3f5f8, #232831);
+	--bg-surface-3: light-dark(#e9edf2, #2b313c);
+	--bg-header: light-dark(#ffffff, #1c2027);
+	--bg-menu: light-dark(#162d50, #11213b);
+	--bg-menu-hover: light-dark(#20447a, #1d3a66);
+	--bg-code: light-dark(#f5f6f8, #14171c);
+	--bg-input: light-dark(#ffffff, #232831);
 
-	--text: #1c2230;
-	--text-muted: #5b6675;
-	--text-faint: #8b95a3;
+	--text: light-dark(#1c2230, #e6e9ee);
+	--text-muted: light-dark(#5b6675, #9aa4b2);
+	--text-faint: light-dark(#8b95a3, #6b7585);
 	--text-on-brand: #f4f7fb;
 
-	--border: #d7dde5;
-	--border-strong: #c2cad4;
+	--border: light-dark(#d7dde5, #343b46);
+	--border-strong: light-dark(#c2cad4, #434b58);
 
-	--link: #1f5fb8;
-	--link-hover: #163f7d;
+	--link: light-dark(#1f5fb8, #6ea8fe);
+	--link-hover: light-dark(#163f7d, #9ec5fe);
 
 	/* Status */
-	--info: #0d6efd;
-	--info-bg: #e7f1ff;
-	--success: #198754;
-	--success-bg: #e3f4ea;
-	--warning: #b9770e;
-	--warning-bg: #fcf3e2;
-	--danger: #dc3545;
-	--danger-bg: #fbe7e9;
+	--info: light-dark(#0d6efd, #6ea8fe);
+	--info-bg: light-dark(#e7f1ff, #182742);
+	--success: light-dark(#198754, #4cc38a);
+	--success-bg: light-dark(#e3f4ea, #16301f);
+	--warning: light-dark(#b9770e, #e0a93b);
+	--warning-bg: light-dark(#fcf3e2, #3a2f17);
+	--danger: light-dark(#dc3545, #ef6b75);
+	--danger-bg: light-dark(#fbe7e9, #3a1f22);
 
 	/* Shape */
 	--radius-sm: .25rem;
@@ -64,9 +67,14 @@
 	--radius-lg: .5rem;
 	--radius-pill: 50rem;
 
-	--shadow-sm: 0 1px 2px rgba(15, 23, 42, .08);
-	--shadow: 0 2px 8px rgba(15, 23, 42, .1);
-	--shadow-lg: 0 8px 28px rgba(15, 23, 42, .18);
+	/* The dark shadows are larger, and light-dark() only takes colours, so
+	   each shadow has a light and a dark layer; the other one is transparent. */
+	--shadow-sm: 0 1px 2px light-dark(rgba(15, 23, 42, .08), transparent),
+		0 1px 2px light-dark(transparent, rgba(0, 0, 0, .4));
+	--shadow: 0 2px 8px light-dark(rgba(15, 23, 42, .1), transparent),
+		0 2px 10px light-dark(transparent, rgba(0, 0, 0, .5));
+	--shadow-lg: 0 8px 28px light-dark(rgba(15, 23, 42, .18), transparent),
+		0 10px 30px light-dark(transparent, rgba(0, 0, 0, .6));
 
 	/* Type */
 	--font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -75,84 +83,53 @@
 	--container: 1200px;
 }
 
-/* Dark scheme (auto) */
-@media (prefers-color-scheme: dark) {
-	:root:not([data-theme="light"]) {
-		color-scheme: dark;
-
-		--bg-body: #14171c;
-		--bg-surface: #1c2027;
-		--bg-surface-2: #232831;
-		--bg-surface-3: #2b313c;
-		--bg-header: #1c2027;
-		--bg-menu: #11213b;
-		--bg-menu-hover: #1d3a66;
-		--bg-code: #14171c;
-		--bg-input: #232831;
-
-		--text: #e6e9ee;
-		--text-muted: #9aa4b2;
-		--text-faint: #6b7585;
-		--text-on-brand: #f4f7fb;
-
-		--border: #343b46;
-		--border-strong: #434b58;
-
-		--link: #6ea8fe;
-		--link-hover: #9ec5fe;
-
-		--info: #6ea8fe;
-		--info-bg: #182742;
-		--success: #4cc38a;
-		--success-bg: #16301f;
-		--warning: #e0a93b;
-		--warning-bg: #3a2f17;
-		--danger: #ef6b75;
-		--danger-bg: #3a1f22;
-
-		--shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
-		--shadow: 0 2px 10px rgba(0, 0, 0, .5);
-		--shadow-lg: 0 10px 30px rgba(0, 0, 0, .6);
-	}
+:root[data-theme="light"] {
+	color-scheme: light;
 }
 
-/* Dark scheme (forced via data-theme="dark") */
 :root[data-theme="dark"] {
 	color-scheme: dark;
+}
 
-	--bg-body: #14171c;
-	--bg-surface: #1c2027;
-	--bg-surface-2: #232831;
-	--bg-surface-3: #2b313c;
-	--bg-header: #1c2027;
-	--bg-menu: #11213b;
-	--bg-menu-hover: #1d3a66;
-	--bg-code: #14171c;
-	--bg-input: #232831;
+/* Browsers without light-dark() (before 2024) get the light palette only. */
+@supports not (color: light-dark(#000, #fff)) {
+	:root,
+	:root[data-theme] {
+		color-scheme: light;
 
-	--text: #e6e9ee;
-	--text-muted: #9aa4b2;
-	--text-faint: #6b7585;
-	--text-on-brand: #f4f7fb;
+		--bg-body: #eef1f5;
+		--bg-surface: #ffffff;
+		--bg-surface-2: #f3f5f8;
+		--bg-surface-3: #e9edf2;
+		--bg-header: #ffffff;
+		--bg-menu: #162d50;
+		--bg-menu-hover: #20447a;
+		--bg-code: #f5f6f8;
+		--bg-input: #ffffff;
 
-	--border: #343b46;
-	--border-strong: #434b58;
+		--text: #1c2230;
+		--text-muted: #5b6675;
+		--text-faint: #8b95a3;
 
-	--link: #6ea8fe;
-	--link-hover: #9ec5fe;
+		--border: #d7dde5;
+		--border-strong: #c2cad4;
 
-	--info: #6ea8fe;
-	--info-bg: #182742;
-	--success: #4cc38a;
-	--success-bg: #16301f;
-	--warning: #e0a93b;
-	--warning-bg: #3a2f17;
-	--danger: #ef6b75;
-	--danger-bg: #3a1f22;
+		--link: #1f5fb8;
+		--link-hover: #163f7d;
 
-	--shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
-	--shadow: 0 2px 10px rgba(0, 0, 0, .5);
-	--shadow-lg: 0 10px 30px rgba(0, 0, 0, .6);
+		--info: #0d6efd;
+		--info-bg: #e7f1ff;
+		--success: #198754;
+		--success-bg: #e3f4ea;
+		--warning: #b9770e;
+		--warning-bg: #fcf3e2;
+		--danger: #dc3545;
+		--danger-bg: #fbe7e9;
+
+		--shadow-sm: 0 1px 2px rgba(15, 23, 42, .08);
+		--shadow: 0 2px 8px rgba(15, 23, 42, .1);
+		--shadow-lg: 0 8px 28px rgba(15, 23, 42, .18);
+	}
 }
 
 /* ==========================================================================
@@ -1007,6 +984,30 @@ table.table_grid {
 	padding: .6rem .75rem;
 	background: var(--bg-surface-2);
 	border-top: 1px solid var(--border);
+}
+
+/* Under a list, SMF floats the page links left and lets the action row flow
+   around them, so the first button touched the page links. Put both on one
+   bar: actions left, page links right. */
+.flow_auto:has(> .pagesection + .additional_row) {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: .5rem 1rem;
+	padding-inline-end: .75rem;
+	background: var(--bg-surface-2);
+	border-top: 1px solid var(--border);
+}
+
+.flow_auto > .pagesection:has(+ .additional_row) {
+	float: none;
+}
+
+.flow_auto > .pagesection + .additional_row {
+	order: -1;
+	flex: 1 1 auto;
+	background: none;
+	border-top: 0;
 }
 
 /* ==========================================================================
@@ -2361,6 +2362,37 @@ mark.highlight {
 	float: none;
 }
 
+/* Topic and board view: navigation on the left (page links, then the
+   up/down jump), actions on the right. */
+#main_content_section:has(> #forumposts, > #messageindex) > .pagesection > .pagelinks {
+	order: -1;
+	margin-inline-end: auto;
+}
+
+#main_content_section:has(> #forumposts, > #messageindex) > .pagesection > .pagelinks > .button {
+	order: 1;
+	margin-inline-start: .5rem;
+}
+
+/* Topic footer (arranged by theme.js): moderation buttons on their own row,
+   then breadcrumb left and jump-to right. */
+#moderationbuttons_strip {
+	justify-content: flex-end;
+}
+
+.topic_tools {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: .5rem 1rem;
+	margin-top: .75rem;
+}
+
+.topic_tools > * {
+	margin: 0;
+}
+
 /* The loose filter text next to floated buttons: match the button height so
    both sit on one centre line. */
 .additional_row:has(> .floatright) {
@@ -2650,6 +2682,38 @@ mark.highlight {
 /* Content links in overlays (login etc.); the rule above is meant for menus. */
 #smf_popup .popup_window a:not(.button, .hide_popup) {
 	color: var(--link);
+}
+
+/* Help and other reqOverlayDiv() overlays: SMF appends them to the end of
+   <body>, below the page. Centre them like the login overlay. The backdrop
+   is a body pseudo-element because SMF closes the overlay on clicks outside
+   #smf_popup. */
+#smf_popup > .popup_window:not(:has(form#frmLogin, form#frmTfa)) {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: min(36rem, calc(100% - 2rem));
+	max-height: calc(100vh - 2rem);
+	max-height: calc(100dvh - 2rem);
+	overflow-y: auto;
+	margin: 0;
+	z-index: 100;
+}
+
+#smf_popup .popup_content {
+	padding: 1rem;
+	line-height: 1.6;
+}
+
+body:has(#smf_popup)::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, .65);
+	-webkit-backdrop-filter: blur(3px);
+	backdrop-filter: blur(3px);
+	z-index: 99;
 }
 
 .notify_dropdown,

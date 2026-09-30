@@ -22,8 +22,8 @@
 		'O:-)': '😇'
 	};
 
-	// sw.js blanks every smiley image, so a code without an emoji falls back
-	// to its text instead of disappearing.
+	// A code without an emoji falls back to its text, so every smiley on the
+	// page renders the same way.
 	function swap(img) {
 		var code = img.getAttribute('alt');
 		if (!code)
@@ -57,10 +57,16 @@
 			swap(imgs[i]);
 	});
 
-	// Register the service worker that intercepts smiley GIF requests.
-	if ('serviceWorker' in navigator && document.currentScript) {
-		var swUrl = document.currentScript.src.replace(/[^/]+$/, 'sw.js');
-		navigator.serviceWorker.register(swUrl, { scope: '/' }).catch(function() {});
+	// Up to 1.2.2 the theme registered a service worker (scripts/sw.js) to
+	// blank smiley GIFs. Drop any sw.js worker browsers still have.
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.getRegistrations().then(function(registrations) {
+			registrations.forEach(function(registration) {
+				var worker = registration.active || registration.waiting || registration.installing;
+				if (worker && /\/sw\.js$/.test(new URL(worker.scriptURL).pathname))
+					registration.unregister();
+			});
+		}).catch(function() {});
 	}
 
 })();
