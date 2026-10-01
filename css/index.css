@@ -2362,24 +2362,19 @@ mark.highlight {
 	float: none;
 }
 
-/* Topic and board view: navigation on the left (page links, then the
-   up/down jump), actions on the right. */
+/* Topic and board view: actions on the left, then the up/down jump and
+   the page links at the far right. */
 #main_content_section:has(> #forumposts, > #messageindex) > .pagesection > .pagelinks {
-	order: -1;
-	margin-inline-end: auto;
+	order: 1;
+	margin-inline-start: auto;
 }
 
 #main_content_section:has(> #forumposts, > #messageindex) > .pagesection > .pagelinks > .button {
-	order: 1;
-	margin-inline-start: .5rem;
+	margin-inline-end: .5rem;
 }
 
-/* Topic footer (arranged by theme.js): moderation buttons on their own row,
-   then breadcrumb left and jump-to right. */
-#moderationbuttons_strip {
-	justify-content: flex-end;
-}
-
+/* Topic footer (arranged by theme.js): moderation buttons on their own row
+   under the actions, then breadcrumb left and jump-to right. */
 .topic_tools {
 	display: flex;
 	flex-wrap: wrap;

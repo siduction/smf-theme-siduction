@@ -51,8 +51,8 @@ function template_html_above()
 
 	// Loaded before first paint to avoid a flash; external files need no CSP exception.
 	echo '
-	<script src="', $settings['theme_url'], '/scripts/color-mode.js"></script>
-	<script src="', $settings['theme_url'], '/scripts/smileys.js"></script>';
+	<script src="', $settings['theme_url'], '/scripts/color-mode.js', $context['browser_cache'], '"></script>
+	<script src="', $settings['theme_url'], '/scripts/smileys.js', $context['browser_cache'], '"></script>';
 
 	template_css();
 	template_javascript();
