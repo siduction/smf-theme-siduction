@@ -66,3 +66,16 @@ block in sync when you change a light colour.
 - Made for the [siduction](https://siduction.org/) forum.
 - Icons from [Bootstrap Icons](https://icons.getbootstrap.com/) (MIT).
 - Runs on [Simple Machines Forum](https://www.simplemachines.org/).
+
+## License
+
+GPL-3.0, see [LICENSE](LICENSE).
+
+Third-party parts keep their own licenses:
+
+- `index.template.php` is based on the SMF 2.1 default theme template,
+  copyright Simple Machines and individual contributors,
+  [BSD 3-Clause](https://www.simplemachines.org/about/smf/license.php).
+- `fonts/bootstrap-icons.woff2` is
+  [Bootstrap Icons](https://github.com/twbs/icons), copyright The Bootstrap
+  Authors, [MIT](https://github.com/twbs/icons/blob/main/LICENSE).

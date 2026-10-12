@@ -2,6 +2,11 @@
 /**
  * Siduction theme for SMF 2.1 — main template.
  *
+ * Based on the SMF 2.1 default theme template,
+ * copyright Simple Machines and individual contributors,
+ * BSD 3-Clause (https://www.simplemachines.org/about/smf/license.php).
+ *
+ * @license https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0
  * @version 0.0.0-dev
  */
 
