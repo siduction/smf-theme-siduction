@@ -20,10 +20,33 @@ $(function() {
 		reqOverlayDiv(this.href, $(this).attr('data-overlay-title') || '', $(this).attr('data-overlay'));
 	});
 
+	// {LINK} in the page index comes from SMF's JavaScriptEscape(): single-quoted
+	// literals joined with " + ", the forum URL as the smf_scripturl variable.
+	// Evaluate exactly that; anything else returns null.
+	function sidJsString(expr) {
+		var re = /'((?:[^'\\]|\\.)*)'|smf_scripturl|\s*\+\s*/g;
+		var out = '', pos = 0, m;
+		while ((m = re.exec(expr))) {
+			if (m.index !== pos)
+				return null;
+			pos = re.lastIndex;
+			if (m[1] !== undefined)
+				out += m[1].replace(/\\(.)/g, function(all, c) {
+					return c === 'n' ? '\n' : c === 't' ? '\t' : c;
+				});
+			else if (m[0] === 'smf_scripturl')
+				out += smf_scripturl;
+		}
+		return pos === expr.length ? out : null;
+	}
+
 	$('.expand_pages').on('click', function() {
-		if (typeof expandPages !== 'function')
+		// After the first 50 pages expandPages() sets its own onclick for the rest.
+		if (typeof expandPages !== 'function' || this.onclick)
 			return;
-		var url = String($(this).attr('data-baseurl') || '').replace(/^['"]+|['"]+$/g, '');
+		var url = sidJsString(String($(this).attr('data-baseurl') || '').trim());
+		if (url === null)
+			return;
 		expandPages(this, url,
 			parseInt($(this).attr('data-firstpage'), 10),
 			parseInt($(this).attr('data-lastpage'), 10),

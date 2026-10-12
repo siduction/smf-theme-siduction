@@ -2811,9 +2811,11 @@ body:has(#smf_popup)::before {
 	flex: 1 1 auto;
 }
 
+/* Matched by query parameters that survive Pretty URLs (the inbox link is
+   plain "/pm/" there, hence the :not() for it). */
 #pm_menu .pm_sending a[href$="sa=send"]::before,
 #pm_menu .pm_sending a[href$="sa=settings"]::before,
-#pm_menu .pm_mailbox a[href$="action=pm"]::before,
+#pm_menu .pm_mailbox a:not([href*="f=sent"])::before,
 #pm_menu .pm_mailbox a[href$="f=sent"]::before,
 #alerts_menu .alerts_opts a[href*="sa=markread"]::before,
 #alerts_menu .alerts_opts a.floatright::before,
@@ -2834,7 +2836,7 @@ body:has(#smf_popup)::before {
 	content: "\f64d"; /* plus-lg */
 }
 
-#pm_menu .pm_mailbox a[href$="action=pm"]::before {
+#pm_menu .pm_mailbox a:not([href*="f=sent"])::before {
 	content: "\f32f"; /* envelope */
 }
 

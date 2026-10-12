@@ -13,6 +13,15 @@
 	float: left;
 }
 
+/* [float] BBCode keeps the side the author picked (same fix as SMF 2.1.8). */
+.bbc_float.floatleft {
+	float: left;
+}
+
+.bbc_float.floatright {
+	float: right;
+}
+
 .header_tools {
 	margin-left: 0;
 	margin-right: auto;
